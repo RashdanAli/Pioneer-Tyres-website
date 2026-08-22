@@ -11,20 +11,20 @@ export default function FeaturedRange() {
           <div className="max-w-xl">
             <div className="eyebrow">The Range</div>
             <h2 className="display text-display-lg mt-4 text-balance">
-              Purpose-built.<br />
-              <span className="italic text-ember-500">Not one-size-fits-all.</span>
+              Two products.<br />
+              <span className="italic text-ember-500">Both, done right.</span>
             </h2>
           </div>
           <Link href="/tyres" className="btn-outline shrink-0">
-            View all tyres
+            View all products
             <svg className="w-4 h-4" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0-4-4m4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </Link>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2">
           {featured.map((p, i) => (
             <div key={p.slug} className={`reveal reveal-delay-${(i % 4) + 1}`}>
-              <ProductCard product={p} size={200} />
+              <ProductCard product={p} size={220} />
             </div>
           ))}
         </div>

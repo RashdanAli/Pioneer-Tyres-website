@@ -22,10 +22,10 @@ export function Logo({ className = '' }: { className?: string }) {
       </svg>
       <div className="leading-none">
         <div className="font-display text-[19px] tracking-wide text-white">
-          Pioneer<span className="text-ember-500">·</span>Cooper
+          Pioneer<span className="text-ember-500">·</span>Tyre
         </div>
         <div className="text-[9px] uppercase tracking-[0.28em] text-bone-300/70 mt-0.5">
-          Tyres of Sri Lanka
+          Available Since 2000
         </div>
       </div>
     </div>
