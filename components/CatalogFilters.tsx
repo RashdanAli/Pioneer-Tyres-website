@@ -2,87 +2,56 @@
 
 import { useMemo, useState } from 'react';
 import { ProductCard } from './ProductCard';
-import { products, filterOptions, type Vehicle, type UseCase, type Tread } from '@/lib/products';
+import { products, filterOptions, type Category } from '@/lib/products';
 
 export default function CatalogFilters({
-  initialVehicle,
+  initialCategory,
 }: {
-  initialVehicle?: Vehicle | null;
+  initialCategory?: Category | null;
 }) {
-  const [vehicle, setVehicle] = useState<Vehicle | null>(initialVehicle ?? null);
-  const [useCase, setUseCase] = useState<UseCase | null>(null);
-  const [tread, setTread] = useState<Tread | null>(null);
+  const [category, setCategory] = useState<Category | null>(initialCategory ?? null);
 
   const filtered = useMemo(
-    () =>
-      products.filter((p) => {
-        if (vehicle && p.vehicle !== vehicle) return false;
-        if (useCase && !p.useCase.includes(useCase)) return false;
-        if (tread && p.tread !== tread) return false;
-        return true;
-      }),
-    [vehicle, useCase, tread],
+    () => products.filter((p) => (category ? p.category === category : true)),
+    [category],
   );
 
-  const clear = () => {
-    setVehicle(null);
-    setUseCase(null);
-    setTread(null);
-  };
-
-  const hasFilter = vehicle || useCase || tread;
+  const clear = () => setCategory(null);
+  const hasFilter = !!category;
 
   return (
     <div className="grid gap-10 lg:grid-cols-12">
       {/* Sidebar */}
       <aside className="lg:col-span-3">
         <div className="sticky top-24 space-y-8">
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <div className="eyebrow">Filters</div>
-              {hasFilter && (
-                <button onClick={clear} className="text-xs text-bone-300 hover:text-ember-400 transition-colors uppercase tracking-wider">
-                  Clear
-                </button>
-              )}
-            </div>
+          <div className="flex items-center justify-between mb-4">
+            <div className="eyebrow">Filters</div>
+            {hasFilter && (
+              <button
+                onClick={clear}
+                className="text-xs text-bone-300 hover:text-ember-400 transition-colors uppercase tracking-wider"
+              >
+                Clear
+              </button>
+            )}
           </div>
 
-          <FilterGroup title="Vehicle">
-            {filterOptions.vehicle.map((opt) => (
+          <FilterGroup title="Category">
+            {filterOptions.category.map((opt) => (
               <FilterPill
                 key={opt.value}
-                active={vehicle === opt.value}
-                onClick={() => setVehicle(vehicle === opt.value ? null : opt.value)}
+                active={category === opt.value}
+                onClick={() => setCategory(category === opt.value ? null : opt.value)}
               >
                 {opt.label}
               </FilterPill>
             ))}
           </FilterGroup>
 
-          <FilterGroup title="Use case">
-            {filterOptions.useCase.map((opt) => (
-              <FilterPill
-                key={opt.value}
-                active={useCase === opt.value}
-                onClick={() => setUseCase(useCase === opt.value ? null : opt.value)}
-              >
-                {opt.label}
-              </FilterPill>
-            ))}
-          </FilterGroup>
-
-          <FilterGroup title="Tread">
-            {filterOptions.tread.map((opt) => (
-              <FilterPill
-                key={opt.value}
-                active={tread === opt.value}
-                onClick={() => setTread(tread === opt.value ? null : opt.value)}
-              >
-                {opt.label}
-              </FilterPill>
-            ))}
-          </FilterGroup>
+          <p className="text-xs text-bone-400 leading-relaxed border-t border-white/[0.06] pt-6">
+            Our range is intentionally focused —
+            <span className="text-bone-100"> just 2 products</span>, each engineered to do one job exceptionally well.
+          </p>
         </div>
       </aside>
 
@@ -90,22 +59,23 @@ export default function CatalogFilters({
       <div className="lg:col-span-9">
         <div className="flex items-center justify-between mb-6">
           <div className="text-sm text-bone-300">
-            <span className="text-white font-medium">{filtered.length}</span> tyres
-            {hasFilter && <span className="text-bone-400"> matching your filters</span>}
+            <span className="text-white font-medium">{filtered.length}</span>{' '}
+            {filtered.length === 1 ? 'product' : 'products'}
+            {hasFilter && <span className="text-bone-400"> in this category</span>}
           </div>
         </div>
 
         {filtered.length > 0 ? (
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2">
             {filtered.map((p) => (
-              <ProductCard key={p.slug} product={p} size={180} />
+              <ProductCard key={p.slug} product={p} size={200} />
             ))}
           </div>
         ) : (
           <div className="surface p-14 text-center">
-            <div className="font-display text-2xl text-white">No tyres match those filters.</div>
-            <p className="text-bone-300 mt-3">Try broadening or clearing.</p>
-            <button onClick={clear} className="btn-outline mt-6">Clear filters</button>
+            <div className="font-display text-2xl text-white">No products match that filter.</div>
+            <p className="text-bone-300 mt-3">Try clearing to see the full range.</p>
+            <button onClick={clear} className="btn-outline mt-6">Clear filter</button>
           </div>
         )}
       </div>

@@ -1,6 +1,4 @@
 import Link from 'next/link';
-import { WhatsAppIcon } from './Nav';
-import { whatsappUrl } from '@/lib/site';
 import { TyreArt } from './TyreArt';
 
 export default function Hero() {
@@ -26,7 +24,7 @@ export default function Hero() {
             <div className="reveal flex items-center gap-3">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-bone-100">
                 <span className="w-1.5 h-1.5 rounded-full bg-ember-500 animate-ember-pulse" />
-                Made in Sri Lanka · Est. 1998
+                Available Since 2000
               </span>
             </div>
 
@@ -36,7 +34,7 @@ export default function Hero() {
             </h1>
 
             <p className="reveal reveal-delay-2 mt-8 max-w-xl text-lg leading-relaxed text-bone-300 text-pretty">
-              Premium high-durability tyres for motorbikes and tuk-tuks —
+              High-durability tuk-tuk tyres and universal inner tubes —
               engineered for Sri Lanka&apos;s heat, rain, and every kilometre in between.
             </p>
 
@@ -45,16 +43,12 @@ export default function Hero() {
                 Find your tyre
                 <svg className="w-4 h-4" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0-4-4m4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </Link>
-              <a href={whatsappUrl()} target="_blank" rel="noreferrer" className="btn-ghost">
-                <WhatsAppIcon className="w-4 h-4" />
-                Get a WhatsApp quote
-              </a>
             </div>
 
             {/* Trust bar */}
             <div className="reveal reveal-delay-4 mt-14 grid grid-cols-3 gap-6 sm:gap-10 max-w-xl border-t border-white/[0.08] pt-8">
-              <Stat value="27" suffix=" yrs" label="On Sri Lankan roads" />
-              <Stat value="45K" suffix="+ km" label="Avg. tuk-tuk life" />
+              <Stat value="25" suffix="+ yrs" label="Available since 2000" />
+              <Stat value="40K" suffix="+ km" label="Avg. tuk-tuk life" />
               <Stat value="2 yr" label="Manufacturer warranty" />
             </div>
           </div>
@@ -76,7 +70,7 @@ export default function Hero() {
               {/* Floating spec chips */}
               <SpecChip className="absolute top-6 -left-2 md:-left-8" label="Load Index" value="78J" />
               <SpecChip className="absolute bottom-8 -right-2 md:-right-6" label="Tread depth" value="10.2 mm" />
-              <SpecChip className="absolute top-1/2 -right-4 md:-right-14 -translate-y-1/2" label="Wet grip" value="Class A" />
+              <SpecChip className="absolute top-1/2 -right-4 md:-right-14 -translate-y-1/2" label="Ply rating" value="6 PR" />
             </div>
           </div>
         </div>
@@ -86,12 +80,12 @@ export default function Hero() {
       <div className="marquee relative mt-16 border-y border-white/[0.05] bg-ink-900/60 py-4 overflow-hidden">
         <div className="marquee-track text-bone-200/70 text-sm uppercase tracking-[0.25em] font-medium">
           {[...Array(2)].flatMap((_, i) => [
-            <TickerItem key={`a${i}`}>Motorbike tyres</TickerItem>,
-            <TickerItem key={`b${i}`}>Tuk-Tuk tyres</TickerItem>,
+            <TickerItem key={`a${i}`}>Tuk-Tuk tyres</TickerItem>,
+            <TickerItem key={`b${i}`}>Universal inner tubes</TickerItem>,
             <TickerItem key={`c${i}`}>City · Highway · Off-road</TickerItem>,
             <TickerItem key={`d${i}`}>Monsoon-ready compounds</TickerItem>,
-            <TickerItem key={`e${i}`}>3-year commercial warranty</TickerItem>,
-            <TickerItem key={`f${i}`}>Free island-wide delivery over Rs. 15,000</TickerItem>,
+            <TickerItem key={`e${i}`}>Trusted since 2000</TickerItem>,
+            <TickerItem key={`f${i}`}>Island-wide availability</TickerItem>,
           ])}
         </div>
       </div>
