@@ -1,20 +1,20 @@
 import type { Metadata } from 'next';
 import CatalogFilters from '@/components/CatalogFilters';
-import type { Vehicle } from '@/lib/products';
+import type { Category } from '@/lib/products';
 
 export const metadata: Metadata = {
-  title: 'All Tyres — Pioneer Cooper',
-  description: 'Explore every Pioneer Cooper tyre for motorbikes and tuk-tuks. Filter by vehicle, use case, and tread.',
+  title: 'Products — Pioneer Tyre',
+  description: 'Explore the Pioneer Tyre range — tuk-tuk tyres and universal inner tubes. Available across Sri Lanka since 2000.',
 };
 
 export default function TyresPage({
   searchParams,
 }: {
-  searchParams: { vehicle?: string };
+  searchParams: { category?: string };
 }) {
-  const initialVehicle: Vehicle | null =
-    searchParams.vehicle === 'motorbike' || searchParams.vehicle === 'tuktuk'
-      ? (searchParams.vehicle as Vehicle)
+  const initialCategory: Category | null =
+    searchParams.category === 'tyre' || searchParams.category === 'tube'
+      ? (searchParams.category as Category)
       : null;
 
   return (
@@ -25,11 +25,12 @@ export default function TyresPage({
           <div className="reveal">
             <div className="eyebrow">The Range</div>
             <h1 className="display text-display-xl mt-4 text-balance max-w-4xl">
-              Every tyre we make.<br />
-              <span className="italic text-ember-500">One page.</span>
+              Two products.<br />
+              <span className="italic text-ember-500">Zero compromise.</span>
             </h1>
             <p className="mt-6 max-w-2xl text-lg text-bone-300 text-pretty">
-              Filter by vehicle, riding style, or tread. Every tyre is built in Sri Lanka for Sri Lanka.
+              A tuk-tuk tyre and an inner tube — that&apos;s our entire range.
+              Built in Sri Lanka, available since 2000.
             </p>
           </div>
         </div>
@@ -37,7 +38,7 @@ export default function TyresPage({
 
       <section className="pb-24 md:pb-32">
         <div className="container-x">
-          <CatalogFilters initialVehicle={initialVehicle} />
+          <CatalogFilters initialCategory={initialCategory} />
         </div>
       </section>
     </>

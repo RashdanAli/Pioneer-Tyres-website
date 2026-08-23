@@ -1,6 +1,6 @@
-# Pioneer Cooper Tyres — Website
+# Pioneer Tyre — Website
 
-Premium marketing site for Pioneer Cooper Tyres (Sri Lanka). Motorbike + tuk-tuk tyres. Dark, moody, mobile-first, WhatsApp-driven.
+Marketing site for Pioneer Tyre (Sri Lanka). Tuk-tuk tyres + universal inner tubes. Dark, moody, mobile-first, WhatsApp-driven. Available since 2000.
 
 ## Stack
 - Next.js 14 (App Router) + TypeScript
@@ -17,12 +17,12 @@ npm run dev
 ## Structure
 - `app/` — Routes (home, `/tyres`, `/tyres/[slug]`)
 - `components/` — Reusable UI (Hero, TyreSelector, ProductCard, etc.)
-- `lib/products.ts` — Product catalog (single source of truth)
+- `lib/products.ts` — Product catalog (single source of truth — 2 products)
 - `lib/site.ts` — Brand + contact info
 
 ## Editing content
 - Products: `lib/products.ts`
-- WhatsApp number, address, email: `lib/site.ts`
+- WhatsApp number, email, address: `lib/site.ts`
 
 ## Deploy
 Any Node host. Vercel recommended.

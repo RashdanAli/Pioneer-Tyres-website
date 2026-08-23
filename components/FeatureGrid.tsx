@@ -26,7 +26,7 @@ const features = [
       </svg>
     ),
     title: 'Long-Life Compound',
-    body: 'Tuk-tuk tyres regularly cross 45,000 km. Motorbike tyres run 25,000 km+ on average commutes.',
+    body: 'Pioneer tuk-tuk tyres regularly cross 40,000 km on typical daily routes across the island.',
   },
   {
     icon: (
@@ -44,8 +44,8 @@ const features = [
         <path d="M14 4l3 6 6 1-4.5 4.5 1 6.5L14 19l-5.5 3 1-6.5L5 11l6-1 3-6z" stroke="#F5525E" strokeWidth="1.5" strokeLinejoin="round" />
       </svg>
     ),
-    title: '2–3 Yr Warranty',
-    body: 'Every Pioneer Cooper tyre is covered against manufacturing defects with our island-wide dealer network.',
+    title: 'Manufacturer Warranty',
+    body: 'Every Pioneer tyre and Avis tube is covered against manufacturing defects. Simple, honest, no fine print.',
   },
   {
     icon: (
@@ -65,14 +65,14 @@ export default function FeatureGrid() {
       <div className="container-x">
         <div className="reveal grid gap-8 md:grid-cols-12 items-end mb-16">
           <div className="md:col-span-7">
-            <div className="eyebrow">Why Pioneer Cooper</div>
+            <div className="eyebrow">Why Choose Us</div>
             <h2 className="display text-display-lg mt-4 text-balance">
               Not the loudest brand.<br />
               <span className="italic text-ember-500">Just the longest-lasting.</span>
             </h2>
           </div>
           <p className="md:col-span-5 text-lg text-bone-300 text-pretty">
-            27 years of building tyres for the specific chaos of Sri Lankan roads —
+            25+ years of building for the specific chaos of Sri Lankan roads —
             heat, monsoon, potholes, and overload. Here&apos;s what that gets you.
           </p>
         </div>

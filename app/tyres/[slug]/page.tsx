@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getProduct, products } from '@/lib/products';
-import { TyreArt } from '@/components/TyreArt';
+import { ProductImage } from '@/components/ProductImage';
 import { ProductCard } from '@/components/ProductCard';
 import { WhatsAppIcon } from '@/components/Nav';
 import { whatsappUrl } from '@/lib/site';
@@ -13,9 +13,9 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const p = getProduct(params.slug);
-  if (!p) return { title: 'Tyre — Pioneer Cooper' };
+  if (!p) return { title: 'Product — Pioneer Tyre' };
   return {
-    title: `${p.name} — Pioneer Cooper Tyres`,
+    title: `${p.name} — Pioneer Tyre`,
     description: p.description,
   };
 }
@@ -24,10 +24,19 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   const product = getProduct(params.slug);
   if (!product) notFound();
 
-  const inquiryText = `Hi Pioneer Cooper, I'd like a quote for the ${product.name} (${product.sizes[0]}). Please share pricing and nearest dealer.`;
-  const related = products
-    .filter((p) => p.slug !== product.slug && p.vehicle === product.vehicle)
-    .slice(0, 3);
+  const inquiryText = `Hi, I'd like a quote for the ${product.name} (${product.sizes[0]}). Please share pricing and availability.`;
+  const other = products.filter((p) => p.slug !== product.slug);
+
+  const specRows = [
+    { label: 'Brand', value: product.brand },
+    { label: 'Series', value: product.series },
+    { label: 'Category', value: product.category === 'tyre' ? 'Tuk-Tuk Tyre' : 'Inner Tube' },
+    ...(product.loadIndex ? [{ label: 'Load Index', value: product.loadIndex }] : []),
+    ...(product.speedRating ? [{ label: 'Speed Rating', value: product.speedRating }] : []),
+    { label: 'Sizes', value: product.sizes.join(' · ') },
+    ...product.specs,
+    { label: 'Warranty', value: product.warranty },
+  ];
 
   return (
     <>
@@ -38,7 +47,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           <nav className="mb-8 flex items-center gap-2 text-xs text-bone-400 uppercase tracking-[0.18em]" aria-label="Breadcrumb">
             <Link href="/" className="hover:text-ember-400">Home</Link>
             <span>/</span>
-            <Link href="/tyres" className="hover:text-ember-400">Tyres</Link>
+            <Link href="/tyres" className="hover:text-ember-400">Products</Link>
             <span>/</span>
             <span className="text-bone-100">{product.name}</span>
           </nav>
@@ -46,11 +55,18 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           <div className="grid gap-14 lg:grid-cols-12 lg:gap-10 items-start">
             {/* Visual */}
             <div className="lg:col-span-5">
-              <div className="reveal relative aspect-square rounded-3xl overflow-hidden border border-white/[0.06] bg-gradient-to-br from-ink-800 to-ink-900 flex items-center justify-center">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(225,29,46,0.14),transparent_60%)]" />
-                <div className="absolute inset-6 rounded-full border border-white/[0.06]" />
-                <div className="absolute inset-12 rounded-full border border-white/[0.05]" />
-                <TyreArt size={340} pattern={product.tread} />
+              <div className="reveal relative aspect-square">
+                <ProductImage
+                  src={product.image}
+                  alt={product.name}
+                  size={480}
+                  frameClassName="rounded-3xl border border-white/[0.06]"
+                  className="absolute inset-0 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)]"
+                  variant={product.imageVariant}
+                  tiltStrength={10}
+                  priority
+                  sizes="(max-width: 1024px) 90vw, 520px"
+                />
               </div>
             </div>
 
@@ -92,7 +108,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                   WhatsApp for pricing
                 </a>
                 <Link href="/tyres" className="btn-ghost">
-                  ← Back to all tyres
+                  ← Back to products
                 </Link>
               </div>
 
@@ -138,15 +154,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             </div>
             <div className="lg:col-span-8">
               <dl className="divide-y divide-white/[0.06] border-t border-white/[0.06]">
-                {[
-                  { label: 'Series', value: product.series },
-                  { label: 'Vehicle', value: product.vehicle === 'motorbike' ? 'Motorbike' : 'Tuk-Tuk' },
-                  { label: 'Load Index', value: product.loadIndex },
-                  { label: 'Speed Rating', value: product.speedRating },
-                  { label: 'Sizes', value: product.sizes.join(' · ') },
-                  ...product.specs,
-                  { label: 'Warranty', value: product.warranty },
-                ].map((s) => (
+                {specRows.map((s) => (
                   <div key={s.label} className="flex items-baseline justify-between gap-6 py-4">
                     <dt className="text-sm text-bone-400 uppercase tracking-wider shrink-0">{s.label}</dt>
                     <dd className="text-right text-white font-medium">{s.value}</dd>
@@ -158,16 +166,16 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         </div>
       </section>
 
-      {/* Related */}
-      {related.length > 0 && (
+      {/* Other product */}
+      {other.length > 0 && (
         <section className="py-20 border-t border-white/[0.05]">
           <div className="container-x">
             <div className="reveal flex items-end justify-between gap-6 mb-10">
-              <h2 className="display text-display-md">You might also consider.</h2>
+              <h2 className="display text-display-md">Also in the range.</h2>
               <Link href="/tyres" className="text-sm text-ember-400 hover:text-ember-300">See all →</Link>
             </div>
-            <div className="grid gap-5 md:grid-cols-3">
-              {related.map((p) => (
+            <div className="grid gap-5 md:grid-cols-2">
+              {other.map((p) => (
                 <ProductCard key={p.slug} product={p} size={180} />
               ))}
             </div>

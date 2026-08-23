@@ -3,7 +3,7 @@ import { Cormorant, Manrope } from 'next/font/google';
 import './globals.css';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
-import WhatsAppFab from '@/components/WhatsAppFab';
+import SocialFabs from '@/components/SocialFabs';
 import Reveal from '@/components/Reveal';
 
 const display = Cormorant({
@@ -21,12 +21,12 @@ const sans = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: 'Pioneer Cooper Tyres — Built for Sri Lanka. Trusted by every road.',
+  title: 'Pioneer Tyre — Built for Sri Lanka. Trusted by every road.',
   description:
-    'Premium high-durability tyres for motorbikes and tuk-tuks. Engineered in Sri Lanka for Sri Lankan roads. Explore the range and find your fit.',
-  metadataBase: new URL('https://pioneercooper.lk'),
+    'High-durability tuk-tuk tyres and universal inner tubes. Available in Sri Lanka since 2000.',
+  metadataBase: new URL('https://pioneertyre.lk'),
   openGraph: {
-    title: 'Pioneer Cooper Tyres',
+    title: 'Pioneer Tyre',
     description: 'Built for Sri Lanka. Trusted by every road.',
     type: 'website',
   },
@@ -47,7 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Nav />
         <main className="relative">{children}</main>
         <Footer />
-        <WhatsAppFab />
+        <SocialFabs />
       </body>
     </html>
   );
