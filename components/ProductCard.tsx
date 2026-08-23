@@ -3,7 +3,7 @@ import { TyreArt } from './TyreArt';
 import type { Product } from '@/lib/products';
 
 export function ProductCard({ product, size = 200 }: { product: Product; size?: number }) {
-  const badge = product.category === 'tyre' ? 'Tuk-Tuk Tyre' : 'Inner Tube';
+  const badge = product.brand;
   const meta = product.loadIndex
     ? `${product.sizes[0]} · ${product.loadIndex}`
     : `${product.sizes.length} sizes · Universal`;

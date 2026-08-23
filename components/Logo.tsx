@@ -21,11 +21,11 @@ export function Logo({ className = '' }: { className?: string }) {
         </defs>
       </svg>
       <div className="leading-none">
-        <div className="font-display text-[19px] tracking-wide text-white">
-          Pioneer<span className="text-ember-500">·</span>Tyre
+        <div className="font-display text-[20px] tracking-wide font-semibold text-ember-500 drop-shadow-[0_0_12px_rgba(225,29,46,0.5)]">
+          CeyhedgesLanka
         </div>
-        <div className="text-[9px] uppercase tracking-[0.28em] text-bone-300/70 mt-0.5">
-          Available Since 2000
+        <div className="mt-1 text-[9px] uppercase tracking-[0.28em] text-bone-300/80">
+          (Pvt) Ltd
         </div>
       </div>
     </div>

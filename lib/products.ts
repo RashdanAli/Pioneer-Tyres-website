@@ -5,6 +5,7 @@ export type Tread = 'rib' | 'block' | 'mixed';
 export type Product = {
   slug: string;
   name: string;
+  brand: 'Pioneer' | 'Avis';
   series: string;
   category: Category;
   useCase?: UseCase[];
@@ -28,9 +29,10 @@ export type Product = {
 
 export const products: Product[] = [
   {
-    slug: 'tuk-tuk-tyre',
-    name: 'Tuk-Tuk Tyre',
-    series: 'Three-Wheeler / All-Purpose',
+    slug: 'pioneer-tuk-tuk-tyres',
+    name: 'Pioneer Tuk Tuk Tyres',
+    brand: 'Pioneer',
+    series: 'Pioneer / Three-Wheeler',
     category: 'tyre',
     useCase: ['city', 'highway', 'offroad', 'heavyload'],
     tread: 'block',
@@ -55,14 +57,15 @@ export const products: Product[] = [
     featured: true,
   },
   {
-    slug: 'inner-tube',
-    name: 'Inner Tube',
-    series: 'Universal Fitment',
+    slug: 'avis-tubes',
+    name: 'Avis Tubes',
+    brand: 'Avis',
+    series: 'Avis / Universal Fitment',
     category: 'tube',
     sizes: ['2.75-17', '3.00-17', '3.00-18', '4.00-8', '4.50-10'],
     tagline: 'One tube. Every ride. Every road.',
     description:
-      'A high-quality butyl-rubber inner tube designed to fit all common vehicle sizes. Airtight, puncture-tolerant, and pressure-stable — the reliable inner layer behind every kilometre.',
+      'High-quality butyl-rubber inner tubes designed to fit all common vehicle sizes. Airtight, puncture-tolerant, and pressure-stable — the reliable inner layer behind every kilometre.',
     specs: [
       { label: 'Material', value: 'Butyl rubber' },
       { label: 'Valve type', value: 'Standard TR-4' },
@@ -81,8 +84,8 @@ export const products: Product[] = [
 
 export const filterOptions = {
   category: [
-    { value: 'tyre' as Category, label: 'Tuk-Tuk Tyres', hint: 'Three-wheeler' },
-    { value: 'tube' as Category, label: 'Inner Tubes', hint: 'For all vehicles' },
+    { value: 'tyre' as Category, label: 'Pioneer Tuk Tuk Tyres', hint: 'Three-wheeler' },
+    { value: 'tube' as Category, label: 'Avis Tubes', hint: 'For all vehicles' },
   ],
 };
 

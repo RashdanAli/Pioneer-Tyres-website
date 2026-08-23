@@ -32,7 +32,7 @@ export default function Nav() {
         ].join(' ')}
       >
         <div className="container-x flex h-16 items-center justify-between md:h-20">
-          <Link href="/" className="flex items-center" aria-label="Pioneer Tyre — Home">
+          <Link href="/" className="flex items-center" aria-label="CeyhedgesLanka — Home">
             <Logo />
           </Link>
 

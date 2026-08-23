@@ -45,7 +45,7 @@ const features = [
       </svg>
     ),
     title: 'Manufacturer Warranty',
-    body: 'Every Pioneer Tyre product is covered against manufacturing defects. Simple, honest, no fine print.',
+    body: 'Every Pioneer tyre and Avis tube is covered against manufacturing defects. Simple, honest, no fine print.',
   },
   {
     icon: (
@@ -65,7 +65,7 @@ export default function FeatureGrid() {
       <div className="container-x">
         <div className="reveal grid gap-8 md:grid-cols-12 items-end mb-16">
           <div className="md:col-span-7">
-            <div className="eyebrow">Why Pioneer Tyre</div>
+            <div className="eyebrow">Why Choose Us</div>
             <h2 className="display text-display-lg mt-4 text-balance">
               Not the loudest brand.<br />
               <span className="italic text-ember-500">Just the longest-lasting.</span>

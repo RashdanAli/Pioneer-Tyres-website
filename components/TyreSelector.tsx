@@ -67,7 +67,7 @@ export default function TyreSelector() {
                     What do you need?
                   </h3>
                   <p className="mt-2 text-bone-300 text-sm md:text-base">
-                    Pioneer Tyre makes two things — a tuk-tuk tyre and a universal inner tube.
+                    We make two things — <span className="text-white">Pioneer</span> tuk-tuk tyres and <span className="text-white">Avis</span> inner tubes.
                   </p>
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
