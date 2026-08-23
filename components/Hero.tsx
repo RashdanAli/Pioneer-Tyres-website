@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { TyreArt } from './TyreArt';
+import { ProductImage } from './ProductImage';
 
 export default function Hero() {
   return (
@@ -53,24 +53,28 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right — tyre visual */}
+          {/* Right — hero product */}
           <div className="lg:col-span-5 relative">
             <div className="reveal reveal-delay-2 relative aspect-square max-w-[520px] mx-auto">
-              {/* Halo */}
+              {/* Ambient halo behind */}
               <div className="absolute inset-0 rounded-full bg-ember-glow blur-3xl opacity-70" />
-              {/* Concentric rings */}
-              <div className="absolute inset-8 rounded-full border border-white/[0.06]" />
-              <div className="absolute inset-16 rounded-full border border-white/[0.05]" />
-              <div className="absolute inset-24 rounded-full border border-white/[0.04]" />
 
-              <div className="absolute inset-0 flex items-center justify-center">
-                <TyreArt size={420} pattern="block" />
-              </div>
+              <ProductImage
+                src="/images/pioneer-tyre.png"
+                alt="Pioneer Tuk Tuk Tyre"
+                size={480}
+                frameClassName="rounded-[32px]"
+                className="absolute inset-0 shadow-[0_40px_100px_-20px_rgba(225,29,46,0.35)]"
+                variant="dark"
+                tiltStrength={12}
+                priority
+                sizes="(max-width: 1024px) 90vw, 520px"
+              />
 
               {/* Floating spec chips */}
-              <SpecChip className="absolute top-6 -left-2 md:-left-8" label="Load Index" value="78J" />
-              <SpecChip className="absolute bottom-8 -right-2 md:-right-6" label="Tread depth" value="10.2 mm" />
-              <SpecChip className="absolute top-1/2 -right-4 md:-right-14 -translate-y-1/2" label="Ply rating" value="6 PR" />
+              <SpecChip className="absolute top-6 -left-2 md:-left-8 z-20" label="Load Index" value="78J" />
+              <SpecChip className="absolute bottom-8 -right-2 md:-right-6 z-20" label="Tread depth" value="10.2 mm" />
+              <SpecChip className="absolute top-1/2 -right-4 md:-right-14 -translate-y-1/2 z-20" label="Ply rating" value="6 PR" />
             </div>
           </div>
         </div>

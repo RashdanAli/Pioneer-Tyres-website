@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getProduct, products } from '@/lib/products';
-import { TyreArt } from '@/components/TyreArt';
+import { ProductImage } from '@/components/ProductImage';
 import { ProductCard } from '@/components/ProductCard';
 import { WhatsAppIcon } from '@/components/Nav';
 import { whatsappUrl } from '@/lib/site';
@@ -55,11 +55,18 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           <div className="grid gap-14 lg:grid-cols-12 lg:gap-10 items-start">
             {/* Visual */}
             <div className="lg:col-span-5">
-              <div className="reveal relative aspect-square rounded-3xl overflow-hidden border border-white/[0.06] bg-gradient-to-br from-ink-800 to-ink-900 flex items-center justify-center">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(225,29,46,0.14),transparent_60%)]" />
-                <div className="absolute inset-6 rounded-full border border-white/[0.06]" />
-                <div className="absolute inset-12 rounded-full border border-white/[0.05]" />
-                <TyreArt size={340} pattern={product.tread ?? 'rib'} />
+              <div className="reveal relative aspect-square">
+                <ProductImage
+                  src={product.image}
+                  alt={product.name}
+                  size={480}
+                  frameClassName="rounded-3xl border border-white/[0.06]"
+                  className="absolute inset-0 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)]"
+                  variant={product.imageVariant}
+                  tiltStrength={10}
+                  priority
+                  sizes="(max-width: 1024px) 90vw, 520px"
+                />
               </div>
             </div>
 
