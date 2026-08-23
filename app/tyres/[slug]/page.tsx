@@ -24,10 +24,11 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   const product = getProduct(params.slug);
   if (!product) notFound();
 
-  const inquiryText = `Hi Pioneer Tyre, I'd like a quote for the ${product.name} (${product.sizes[0]}). Please share pricing and availability.`;
+  const inquiryText = `Hi, I'd like a quote for the ${product.name} (${product.sizes[0]}). Please share pricing and availability.`;
   const other = products.filter((p) => p.slug !== product.slug);
 
   const specRows = [
+    { label: 'Brand', value: product.brand },
     { label: 'Series', value: product.series },
     { label: 'Category', value: product.category === 'tyre' ? 'Tuk-Tuk Tyre' : 'Inner Tube' },
     ...(product.loadIndex ? [{ label: 'Load Index', value: product.loadIndex }] : []),

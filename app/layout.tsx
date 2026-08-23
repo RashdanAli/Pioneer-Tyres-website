@@ -3,7 +3,7 @@ import { Cormorant, Manrope } from 'next/font/google';
 import './globals.css';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
-import WhatsAppFab from '@/components/WhatsAppFab';
+import SocialFabs from '@/components/SocialFabs';
 import Reveal from '@/components/Reveal';
 
 const display = Cormorant({
@@ -47,7 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Nav />
         <main className="relative">{children}</main>
         <Footer />
-        <WhatsAppFab />
+        <SocialFabs />
       </body>
     </html>
   );
