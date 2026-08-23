@@ -13,6 +13,8 @@ export type Product = {
   sizes: string[];
   tagline: string;
   description: string;
+  image: string;
+  imageVariant?: 'studio' | 'dark'; // 'dark' for transparent-bg PNGs, 'studio' for white-bg JPEGs
   specs: {
     label: string;
     value: string;
@@ -40,6 +42,8 @@ export const products: Product[] = [
     tagline: 'Made for the daily hustle. Built to last.',
     description:
       'A durable, all-purpose tuk-tuk tyre engineered for Sri Lankan roads. Deep block tread grips loose gravel and market lanes; a strong nylon carcass handles cargo loads and daily overload without carcass fatigue.',
+    image: '/images/pioneer-tyre.png',
+    imageVariant: 'dark',
     specs: [
       { label: 'Ply rating', value: '6 PR' },
       { label: 'Max load', value: '500 kg / tyre' },
@@ -63,9 +67,11 @@ export const products: Product[] = [
     series: 'Avis / Universal Fitment',
     category: 'tube',
     sizes: ['2.75-17', '3.00-17', '3.00-18', '4.00-8', '4.50-10'],
-    tagline: 'One tube. Every ride. Every road.',
+    tagline: 'Heavy duty. Puncture resistant. 3-year peace of mind.',
     description:
-      'High-quality butyl-rubber inner tubes designed to fit all common vehicle sizes. Airtight, puncture-tolerant, and pressure-stable — the reliable inner layer behind every kilometre.',
+      'High-quality butyl-rubber inner tubes engineered for real Sri Lankan use. Heavy-duty construction, superior puncture resistance, and airtight butyl rubber — the reliable inner layer behind every kilometre.',
+    image: '/images/avis-tubes.jpg',
+    imageVariant: 'studio',
     specs: [
       { label: 'Material', value: 'Butyl rubber' },
       { label: 'Valve type', value: 'Standard TR-4' },
@@ -74,10 +80,10 @@ export const products: Product[] = [
     ],
     features: [
       { title: 'Airtight Butyl Rubber', body: 'Holds pressure longer than standard tubes — fewer top-ups, safer rides.' },
+      { title: 'Puncture Resistant', body: 'Heavy-duty walls resist small punctures and pinch flats.' },
       { title: 'Universal Fit', body: 'A range of sizes to fit tuk-tuks and other common vehicles.' },
-      { title: 'Puncture-Tolerant', body: 'Thicker walls resist small punctures and pinch flats.' },
     ],
-    warranty: '6-month manufacturer warranty',
+    warranty: '3-year manufacturer warranty',
     featured: true,
   },
 ];
