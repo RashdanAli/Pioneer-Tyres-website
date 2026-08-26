@@ -1,3 +1,5 @@
+import { GlowCard, emberCardVars } from '@/components/ui/spotlight-card';
+
 const features = [
   {
     icon: (
@@ -79,15 +81,16 @@ export default function FeatureGrid() {
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f, i) => (
-            <div
-              key={f.title}
-              className={`reveal reveal-delay-${(i % 4) + 1} surface p-8 hover:border-ember-500/25 hover:bg-ink-700/40 transition-all duration-500 group`}
-            >
-              <div className="w-12 h-12 rounded-xl bg-ember-500/10 border border-ember-500/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-ember-500/15 transition-transform duration-300">
-                {f.icon}
-              </div>
-              <h3 className="font-display text-2xl text-white leading-tight">{f.title}</h3>
-              <p className="mt-3 text-bone-300 text-[15px] leading-relaxed">{f.body}</p>
+            <div key={f.title} className={`reveal reveal-delay-${(i % 4) + 1} group`}>
+              <GlowCard customSize glowColor="ember" style={emberCardVars} className="h-full p-8">
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-ember-500/10 border border-ember-500/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-ember-500/15 transition-transform duration-300">
+                    {f.icon}
+                  </div>
+                  <h3 className="font-display text-2xl text-white leading-tight">{f.title}</h3>
+                  <p className="mt-3 text-bone-300 text-[15px] leading-relaxed">{f.body}</p>
+                </div>
+              </GlowCard>
             </div>
           ))}
         </div>

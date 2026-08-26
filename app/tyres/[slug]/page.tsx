@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getProduct, products } from '@/lib/products';
 import { ProductImage } from '@/components/ProductImage';
 import { ProductCard } from '@/components/ProductCard';
+import { GlowCard, emberCardVars } from '@/components/ui/spotlight-card';
 import { WhatsAppIcon } from '@/components/Nav';
 import { whatsappUrl } from '@/lib/site';
 
@@ -133,10 +134,14 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           </div>
           <div className="grid gap-4 md:grid-cols-3">
             {product.features.map((f, i) => (
-              <div key={f.title} className={`reveal reveal-delay-${i + 1} surface p-8 hover:border-ember-500/25 transition-colors`}>
-                <div className="font-display text-3xl text-ember-500/60 mb-4">0{i + 1}</div>
-                <div className="font-display text-xl text-white leading-tight">{f.title}</div>
-                <p className="mt-3 text-bone-300 text-[15px] leading-relaxed">{f.body}</p>
+              <div key={f.title} className={`reveal reveal-delay-${i + 1}`}>
+                <GlowCard customSize glowColor="ember" style={emberCardVars} className="h-full p-8">
+                  <div>
+                    <div className="font-display text-3xl text-ember-500/60 mb-4">0{i + 1}</div>
+                    <div className="font-display text-xl text-white leading-tight">{f.title}</div>
+                    <p className="mt-3 text-bone-300 text-[15px] leading-relaxed">{f.body}</p>
+                  </div>
+                </GlowCard>
               </div>
             ))}
           </div>

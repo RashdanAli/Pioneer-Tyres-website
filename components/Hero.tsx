@@ -1,10 +1,13 @@
 import Link from 'next/link';
 import { ProductImage } from './ProductImage';
+import HeroVideo from './HeroVideo';
 
 export default function Hero() {
   return (
     <section className="relative min-h-[100svh] overflow-hidden pt-24 md:pt-28 pb-16">
-      {/* Background — radial glows + grid */}
+      {/* Background — video + radial glows + grid.
+          The video sits inside this section, so it scrolls away with the hero. */}
+      <HeroVideo />
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(225,29,46,0.14),transparent_45%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_80%,rgba(225,29,46,0.09),transparent_50%)]" />
