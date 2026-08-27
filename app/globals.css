@@ -61,7 +61,7 @@
   body::after {
     content: '';
     position: fixed;
-    inset: -50%;
+    inset: 0;
     z-index: 56;
     pointer-events: none;
     opacity: 0.035;
@@ -95,7 +95,7 @@
   }
 
   .btn-ghost {
-    @apply btn border border-white/15 bg-white/[0.02] backdrop-blur-sm text-white px-6 py-3 hover:bg-white/[0.06] hover:border-white/25;
+    @apply btn border border-white/15 bg-white/[0.06] md:bg-white/[0.02] md:backdrop-blur-sm text-white px-6 py-3 hover:bg-white/[0.06] hover:border-white/25;
   }
 
   .btn-outline {
@@ -222,7 +222,6 @@
   transform: translateY(16px);
   transition: opacity var(--dur-med) var(--ease-out-expo),
               transform var(--dur-med) var(--ease-out-expo);
-  will-change: opacity, transform;
 }
 .reveal.is-visible { opacity: 1; transform: none; }
 
@@ -233,7 +232,6 @@
   clip-path: inset(0 100% -0.3em 0);
   transition: opacity 160ms linear,
               clip-path var(--dur-slow) var(--ease-out-expo);
-  will-change: clip-path;
 }
 .reveal-mask.is-visible {
   opacity: 1;
@@ -245,7 +243,6 @@
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform var(--dur-slow) var(--ease-out-expo);
-  will-change: transform;
 }
 .reveal-rule.is-visible { transform: scaleX(1); }
 
@@ -255,7 +252,6 @@
   transform: translateY(22px) scale(0.985);
   transition: opacity var(--dur-med) var(--ease-out-expo),
               transform var(--dur-med) var(--ease-settle);
-  will-change: opacity, transform;
 }
 .reveal-card.is-visible { opacity: 1; transform: none; }
 
@@ -266,7 +262,6 @@
   filter: blur(10px);
   transition: opacity var(--dur-fast) ease-out,
               filter var(--dur-fast) ease-out;
-  will-change: filter, opacity;
 }
 .reveal-blur.is-visible { opacity: 1; filter: blur(0); }
 
@@ -322,5 +317,9 @@
      -50% -> 0 slides left-to-right and lands on a frame identical to the
      start, which is what makes the loop seamless. */
   animation: marquee-ltr 40s linear infinite;
+  /* The one place will-change is justified: a single element transforming
+     continuously for the life of the page. It was stripped from the reveal
+     classes because 30+ elements each holding a GPU layer forever is real
+     memory pressure on a phone; one always-animating element is not. */
   will-change: transform;
 }

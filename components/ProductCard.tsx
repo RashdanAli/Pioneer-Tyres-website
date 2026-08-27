@@ -23,7 +23,7 @@ export function ProductCard({ product, size = 220 }: { product: Product; size?: 
           variant={product.imageVariant}
           sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 360px"
         />
-        <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 rounded-full bg-ink-950/85 backdrop-blur px-2.5 py-1 text-[10px] uppercase tracking-wider text-bone-100 border border-white/[0.08]">
+        <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 rounded-full bg-ink-950/95 md:bg-ink-950/85 md:backdrop-blur px-2.5 py-1 text-[10px] uppercase tracking-wider text-bone-100 border border-white/[0.08]">
           <span className="w-1 h-1 rounded-full bg-ember-500" />
           {badge}
         </div>

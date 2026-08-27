@@ -104,6 +104,17 @@ const glowStyles = `
     inset: -10px;
     border-width: 10px;
   }
+
+  /* The outer bloom is a 20px-wide border blurred by 10px, held on a
+     permanently-promoted layer (will-change: filter) — six of those is a
+     serious compositing cost on a phone GPU. The whole spotlight is
+     cursor-driven, so on touch it renders a static glow nobody asked for.
+     Drop the bloom (and its layer) where there is no pointer to track. */
+  @media (hover: none), (pointer: coarse) {
+    [data-glow] [data-glow] { display: none; }
+    [data-glow]::before,
+    [data-glow]::after { display: none; }
+  }
 `;
 
 /* ------------------------------------------------------------------ *
