@@ -32,6 +32,47 @@
     color: white;
   }
 
+  /* ---------------------------------------------------------------
+     ATMOSPHERE
+
+     Two fixed, non-interactive layers over the whole page. Neither is
+     "content" — together they stop large dark areas reading as an
+     empty #050506 fill, which is what makes cheap dark sites look
+     unfinished. Both are pointer-events:none and sit under the nav.
+     --------------------------------------------------------------- */
+
+  /* Vignette — the page reads as lit rather than filled. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 120% 90% at 50% 45%,
+      transparent 55%,
+      rgba(0, 0, 0, 0.45) 100%
+    );
+  }
+
+  /* Film grain — ~3.5%. The cheapest "expensive" signal in dark design,
+     and it dithers away the banding that big soft gradients produce on
+     8-bit displays. */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: -50%;
+    z-index: 56;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body::after { opacity: 0.025; }
+  }
+
   :focus-visible {
     outline: 2px solid rgb(var(--color-accent));
     outline-offset: 3px;
@@ -73,8 +114,21 @@
     @apply text-xs uppercase tracking-[0.24em] text-ember-400 font-medium;
   }
 
+  /* Display type: Archivo pushed to the wide end of its width axis.
+     This is the "machined spec-sheet" voice — expanded, heavy, tight. */
   .display {
-    @apply font-display font-normal text-white;
+    @apply font-display text-white;
+    font-stretch: 125%;
+    font-weight: 700;
+    font-variation-settings: 'wdth' 125;
+  }
+
+  /* Section headings run uppercase at the largest sizes: expanded grotesque
+     caps are what give the reference boards their engineered confidence.
+     Card/sub headings stay sentence case so it never turns into shouting. */
+  .display-caps {
+    @apply display uppercase;
+    letter-spacing: -0.02em;
   }
 
   .divider-glow {
@@ -85,6 +139,35 @@
   .hairline {
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
     height: 1px;
+  }
+
+  /* ---------------------------------------------------------------
+     TONAL PLATES
+
+     Sections alternate between two grounds ~3% apart in luminance.
+     You do not consciously see the step; you feel each section as a
+     separate plate instead of one endless scroll of the same black.
+     --------------------------------------------------------------- */
+  .plate-base   { background-color: #050506; }
+  .plate-raised { background-color: #08080B; }
+
+  /* Ambient ember light. `at` is deliberately different per section so
+     one implied source appears to travel down the page, rather than the
+     same centred ellipse being stamped five times. */
+  .ambient {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .ambient-left {
+    background: radial-gradient(ellipse 70% 60% at 12% 30%, rgba(225,29,46,0.10), transparent 62%);
+  }
+  .ambient-right {
+    background: radial-gradient(ellipse 70% 60% at 88% 35%, rgba(225,29,46,0.09), transparent 62%);
+  }
+  .ambient-center {
+    background: radial-gradient(ellipse 80% 70% at 50% 50%, rgba(225,29,46,0.11), transparent 65%);
   }
 
   .noise-overlay::after {
@@ -115,27 +198,97 @@
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
-/* Reveal-on-scroll — CSS only, no JS */
+/* ==================================================================
+   MOTION VOCABULARY
+
+   One easing family, one rule: duration scales with visual mass.
+   Big things move slowly, small things move quickly — that single
+   relationship is what separates a motion system from 36 copies of
+   the same fade-up. Each element ROLE gets its own gesture.
+   ================================================================== */
+
+:root {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-settle:   cubic-bezier(0.22, 1.12, 0.36, 1); /* faint overshoot */
+  --dur-slow: 880ms;  /* display headings, hero-scale objects */
+  --dur-med:  600ms;  /* cards, paragraphs, media */
+  --dur-fast: 380ms;  /* labels, numerals, chips */
+}
+
+/* Base — a restrained lift. 16px, not 28px: the old value read as a
+   page-load animation rather than content settling into place. */
 .reveal {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
-              transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(16px);
+  transition: opacity var(--dur-med) var(--ease-out-expo),
+              transform var(--dur-med) var(--ease-out-expo);
   will-change: opacity, transform;
 }
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* Headings — wipe in behind a moving mask. No translation at all, so
+   the type never appears to "fly"; it is uncovered, like print. */
+.reveal-mask {
+  opacity: 0;
+  clip-path: inset(0 100% -0.3em 0);
+  transition: opacity 160ms linear,
+              clip-path var(--dur-slow) var(--ease-out-expo);
+  will-change: clip-path;
 }
-.reveal-delay-1 { transition-delay: 80ms; }
-.reveal-delay-2 { transition-delay: 160ms; }
-.reveal-delay-3 { transition-delay: 240ms; }
-.reveal-delay-4 { transition-delay: 320ms; }
+.reveal-mask.is-visible {
+  opacity: 1;
+  clip-path: inset(0 -0.05em -0.3em 0);
+}
+
+/* Rules and seams — drawn, left to right. */
+.reveal-rule {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-slow) var(--ease-out-expo);
+  will-change: transform;
+}
+.reveal-rule.is-visible { transform: scaleX(1); }
+
+/* Cards — lift with a faint scale settle so they land rather than stop. */
+.reveal-card {
+  opacity: 0;
+  transform: translateY(22px) scale(0.985);
+  transition: opacity var(--dur-med) var(--ease-out-expo),
+              transform var(--dur-med) var(--ease-settle);
+  will-change: opacity, transform;
+}
+.reveal-card.is-visible { opacity: 1; transform: none; }
+
+/* Numerals, labels, small meta — resolve out of blur. Fast, since a
+   small element moving slowly reads as sluggish. */
+.reveal-blur {
+  opacity: 0;
+  filter: blur(10px);
+  transition: opacity var(--dur-fast) ease-out,
+              filter var(--dur-fast) ease-out;
+  will-change: filter, opacity;
+}
+.reveal-blur.is-visible { opacity: 1; filter: blur(0); }
+
+/* Stagger — 70ms rather than 80ms, and extended to six steps so grids
+   of six cards resolve as one sweep instead of looping the cadence. */
+.reveal-delay-1 { transition-delay:  70ms; }
+.reveal-delay-2 { transition-delay: 140ms; }
+.reveal-delay-3 { transition-delay: 210ms; }
+.reveal-delay-4 { transition-delay: 280ms; }
+.reveal-delay-5 { transition-delay: 350ms; }
+.reveal-delay-6 { transition-delay: 420ms; }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal, .reveal.is-visible {
+  .reveal, .reveal.is-visible,
+  .reveal-mask, .reveal-mask.is-visible,
+  .reveal-rule, .reveal-rule.is-visible,
+  .reveal-card, .reveal-card.is-visible,
+  .reveal-blur, .reveal-blur.is-visible {
     opacity: 1;
     transform: none;
+    filter: none;
+    clip-path: none;
     transition: none;
   }
   *, *::before, *::after {
@@ -151,10 +304,23 @@
 .group:hover .tyre-svg { transform: rotate(45deg) scale(1.05); }
 
 /* Marquee row */
+/* Ticker.
+   The keyframes are declared HERE, not in tailwind.config.ts. Tailwind only
+   emits a @keyframes block when it sees the matching `animate-*` utility in
+   scanned markup; this track is driven from plain CSS, so a config-only
+   definition gets purged and the animation silently never runs. */
+@keyframes marquee-ltr {
+  from { transform: translate3d(-50%, 0, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+
 .marquee-track {
   display: flex;
   gap: 4rem;
   width: max-content;
-  animation: marquee 40s linear infinite;
+  /* Content is rendered twice, so -50% is exactly one full copy. Travelling
+     -50% -> 0 slides left-to-right and lands on a frame identical to the
+     start, which is what makes the loop seamless. */
+  animation: marquee-ltr 40s linear infinite;
+  will-change: transform;
 }
-.marquee:hover .marquee-track { animation-play-state: paused; }

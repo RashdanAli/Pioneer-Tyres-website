@@ -1,10 +1,12 @@
 import Link from 'next/link';
-import { ProductImage } from './ProductImage';
+import HeroVideo from './HeroVideo';
 
 export default function Hero() {
   return (
     <section className="relative min-h-[100svh] overflow-hidden pt-24 md:pt-28 pb-16">
-      {/* Background — radial glows + grid */}
+      {/* Background — video + radial glows + grid.
+          The video sits inside this section, so it scrolls away with the hero. */}
+      <HeroVideo />
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(225,29,46,0.14),transparent_45%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_80%,rgba(225,29,46,0.09),transparent_50%)]" />
@@ -28,55 +30,43 @@ export default function Hero() {
               </span>
             </div>
 
-            <h1 className="reveal reveal-delay-1 mt-8 display text-display-xl text-balance">
-              Built for the <span className="italic text-ember-500">road.</span><br />
-              Trusted by <span className="italic">every rider.</span>
+            <h1 className="mt-8 display-caps text-display-xl text-balance">
+              <span className="block reveal-mask reveal-delay-1">
+                Built for the <span className="text-ember-500">road.</span>
+              </span>
+              <span className="block reveal-mask reveal-delay-2">
+                Trusted by every rider.
+              </span>
             </h1>
 
-            <p className="reveal reveal-delay-2 mt-8 max-w-xl text-lg leading-relaxed text-bone-300 text-pretty">
+            <p className="reveal reveal-delay-3 mt-8 max-w-xl text-lg leading-relaxed text-bone-300 text-pretty">
               High-durability tuk-tuk tyres and universal inner tubes —
               engineered for Sri Lanka&apos;s heat, rain, and every kilometre in between.
             </p>
 
-            <div className="reveal reveal-delay-3 mt-10 flex flex-wrap items-center gap-3">
+            <div className="reveal reveal-delay-4 mt-10 flex flex-wrap items-center gap-3">
               <Link href="#selector" className="btn-primary">
                 Find your tyre
                 <svg className="w-4 h-4" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m0 0-4-4m4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </Link>
             </div>
 
-            {/* Trust bar */}
-            <div className="reveal reveal-delay-4 mt-14 grid grid-cols-3 gap-6 sm:gap-10 max-w-xl border-t border-white/[0.08] pt-8">
-              <Stat value="25" suffix="+ yrs" label="Available since 2000" />
-              <Stat value="40K" suffix="+ km" label="Avg. tuk-tuk life" />
-              <Stat value="2 yr" label="Manufacturer warranty" />
+            {/* Trust bar — the rule draws itself, then the figures resolve
+                out of blur one after another. */}
+            <div className="mt-14 max-w-xl">
+              <div className="reveal-rule reveal-delay-4 h-px bg-gradient-to-r from-white/25 via-white/10 to-transparent" />
+              <div className="grid grid-cols-3 gap-6 sm:gap-10 pt-8">
+                <Stat value="25" suffix="+ yrs" label="Available since 2000" delay={4} />
+                <Stat value="40K" suffix="+ km" label="Avg. tuk-tuk life" delay={5} />
+                <Stat value="2 yr" label="Manufacturer warranty" delay={6} />
+              </div>
             </div>
           </div>
 
-          {/* Right — hero product */}
-          <div className="lg:col-span-5 relative">
-            <div className="reveal reveal-delay-2 relative aspect-square max-w-[520px] mx-auto">
-              {/* Ambient halo behind */}
-              <div className="absolute inset-0 rounded-full bg-ember-glow blur-3xl opacity-70" />
-
-              <ProductImage
-                src="/images/pioneer-tyre.png"
-                alt="Pioneer Tuk Tuk Tyre"
-                size={480}
-                frameClassName="rounded-[32px]"
-                className="absolute inset-0 shadow-[0_40px_100px_-20px_rgba(225,29,46,0.35)]"
-                variant="dark"
-                tiltStrength={12}
-                priority
-                sizes="(max-width: 1024px) 90vw, 520px"
-              />
-
-              {/* Floating spec chips */}
-              <SpecChip className="absolute top-6 -left-2 md:-left-8 z-20" label="Load Index" value="78J" />
-              <SpecChip className="absolute bottom-8 -right-2 md:-right-6 z-20" label="Tread depth" value="10.2 mm" />
-              <SpecChip className="absolute top-1/2 -right-4 md:-right-14 -translate-y-1/2 z-20" label="Ply rating" value="6 PR" />
-            </div>
-          </div>
+          {/* Right column intentionally left open so the background footage
+              reads through unobstructed. The product shots live in the
+              selector and on the product pages, where they have context. */}
+          <div className="hidden lg:block lg:col-span-5" aria-hidden="true" />
         </div>
       </div>
 
@@ -97,24 +87,24 @@ export default function Hero() {
   );
 }
 
-function Stat({ value, suffix, label }: { value: string; suffix?: string; label: string }) {
+function Stat({
+  value,
+  suffix,
+  label,
+  delay = 1,
+}: {
+  value: string;
+  suffix?: string;
+  label: string;
+  delay?: number;
+}) {
   return (
     <div>
-      <div className="font-display text-3xl md:text-4xl text-white leading-none">
+      <div className={`reveal-blur reveal-delay-${delay} display text-3xl md:text-4xl text-white leading-none tabular-nums`}>
         {value}<span className="text-ember-500">{suffix}</span>
       </div>
-      <div className="mt-2 text-xs text-bone-400 uppercase tracking-wider">{label}</div>
-    </div>
-  );
-}
-
-function SpecChip({ className, label, value }: { className?: string; label: string; value: string }) {
-  return (
-    <div className={`hidden md:flex items-center gap-3 rounded-full border border-white/10 bg-ink-900/80 backdrop-blur-md px-4 py-2.5 shadow-2xl ${className}`}>
-      <span className="w-1.5 h-1.5 rounded-full bg-ember-500" />
-      <div>
-        <div className="text-[10px] uppercase tracking-widest text-bone-400">{label}</div>
-        <div className="text-sm text-white font-medium leading-tight">{value}</div>
+      <div className={`reveal reveal-delay-${delay} mt-2 text-xs text-bone-400 uppercase tracking-[0.18em]`}>
+        {label}
       </div>
     </div>
   );

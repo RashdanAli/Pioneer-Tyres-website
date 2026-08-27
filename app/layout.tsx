@@ -1,22 +1,24 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant, Manrope } from 'next/font/google';
+import { Archivo } from 'next/font/google';
 import './globals.css';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import SocialFabs from '@/components/SocialFabs';
 import Reveal from '@/components/Reveal';
 
-const display = Cormorant({
+/**
+ * One superfamily, two roles.
+ *
+ * Archivo is a variable grotesque with a real width axis (wdth 62–125), so
+ * hierarchy comes from *width and weight within one voice* rather than two
+ * competing personalities. Display type runs expanded (wdth 125) for the
+ * machined, spec-sheet feel; body runs normal width. One font file, one
+ * network request, and the pairing can never clash with itself.
+ */
+const archivo = Archivo({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-display',
-  display: 'swap',
-});
-
-const sans = Manrope({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
-  variable: '--font-sans',
+  axes: ['wdth'],
+  variable: '--font-archivo',
   display: 'swap',
 });
 
@@ -41,7 +43,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable}`}>
+    <html lang="en" className={archivo.variable}>
       <body className="min-h-screen font-sans antialiased">
         <Reveal />
         <Nav />

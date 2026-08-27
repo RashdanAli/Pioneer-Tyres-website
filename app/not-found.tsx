@@ -7,7 +7,7 @@ export default function NotFound() {
         <div className="eyebrow">404 · Off-road</div>
         <h1 className="display text-display-xl mt-4">
           This road doesn&apos;t exist.<br />
-          <span className="italic text-ember-500">Yet.</span>
+          <span className="text-ember-500">Yet.</span>
         </h1>
         <p className="mt-6 text-bone-300 max-w-md mx-auto">
           The page you followed has been retired. Head back and find your tyre.

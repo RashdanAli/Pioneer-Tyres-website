@@ -13,7 +13,7 @@ export const site = {
 
 export const whatsappUrl = (text?: string) => {
   const t = encodeURIComponent(
-    text || `Hi Pioneer Tyre, I'd like to inquire about a product.`,
+    text || `Hi CeyhedgesLanka, I'd like to inquire about a product.`,
   );
   const num = site.whatsapp.replace(/[^0-9]/g, '');
   return `https://wa.me/${num}?text=${t}`;

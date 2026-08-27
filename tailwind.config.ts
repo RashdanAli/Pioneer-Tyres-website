@@ -39,13 +39,15 @@ const config: Config = {
         },
       },
       fontFamily: {
-        display: ['var(--font-display)', 'Georgia', 'serif'],
-        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-archivo)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-archivo)', 'system-ui', 'sans-serif'],
       },
       fontSize: {
-        'display-xl': ['clamp(3rem, 10vw, 7rem)', { lineHeight: '0.95', letterSpacing: '-0.03em' }],
-        'display-lg': ['clamp(2.25rem, 7vw, 5rem)', { lineHeight: '1', letterSpacing: '-0.025em' }],
-        'display-md': ['clamp(1.75rem, 5vw, 3.25rem)', { lineHeight: '1.05', letterSpacing: '-0.02em' }],
+        // Expanded grotesque is already wide, so tracking tightens rather than
+        // opens as size grows — keeps big headlines from drifting apart.
+        'display-xl': ['clamp(2.75rem, 8.5vw, 6rem)', { lineHeight: '0.92', letterSpacing: '-0.035em' }],
+        'display-lg': ['clamp(2rem, 6vw, 4.25rem)', { lineHeight: '0.96', letterSpacing: '-0.03em' }],
+        'display-md': ['clamp(1.6rem, 4.5vw, 2.75rem)', { lineHeight: '1.02', letterSpacing: '-0.025em' }],
       },
       backgroundImage: {
         'grid-fade': 'radial-gradient(ellipse at center, rgba(225, 29, 46, 0.08), transparent 60%)',
