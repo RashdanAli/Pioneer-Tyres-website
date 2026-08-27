@@ -4,7 +4,10 @@ import { whatsappUrl } from '@/lib/site';
 
 export default function CtaBanner() {
   return (
-    <section className="relative py-16 md:py-24">
+    <section className="relative py-16 md:py-24 plate-raised">
+      {/* Implied light source #3 — settles centre, under the final CTA. */}
+      <div className="ambient ambient-center" aria-hidden="true" />
+      <div className="absolute inset-x-0 top-0 h-px hairline" aria-hidden="true" />
       <div className="container-x">
         <div className="reveal relative overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-br from-ink-800 via-ink-800 to-ink-700 p-10 md:p-16">
           {/* Glow */}
@@ -21,9 +24,11 @@ export default function CtaBanner() {
           <div className="relative grid gap-8 lg:grid-cols-12 items-center">
             <div className="lg:col-span-8">
               <div className="eyebrow">Ready to ride?</div>
-              <h2 className="display text-display-lg mt-4 text-balance">
-                Message us on WhatsApp.<br />
-                <span className="italic text-ember-500">Get a quote in minutes.</span>
+              <h2 className="display-caps text-display-lg mt-4 text-balance">
+                <span className="block reveal-mask reveal-delay-1">Message us on WhatsApp.</span>
+                <span className="block reveal-mask reveal-delay-2 text-ember-500">
+                  Get a quote in minutes.
+                </span>
               </h2>
               <p className="mt-5 text-lg text-bone-300 max-w-2xl text-pretty">
                 Tell us your bike or tuk-tuk model and how you ride — our team will match you to the exact tyre

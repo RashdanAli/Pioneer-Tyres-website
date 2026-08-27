@@ -63,17 +63,23 @@ const features = [
 
 export default function FeatureGrid() {
   return (
-    <section id="why" className="relative py-24 md:py-32">
-      <div className="container-x">
-        <div className="reveal grid gap-8 md:grid-cols-12 items-end mb-16">
+    <section id="why" className="relative py-24 md:py-32 plate-base">
+      {/* Implied light source #2 — it has travelled to the right. */}
+      <div className="ambient ambient-right" aria-hidden="true" />
+      <div className="absolute inset-x-0 top-0 h-px hairline" aria-hidden="true" />
+
+      <div className="container-x relative">
+        <div className="grid gap-8 md:grid-cols-12 items-end mb-16">
           <div className="md:col-span-7">
-            <div className="eyebrow">Why Choose Us</div>
-            <h2 className="display text-display-lg mt-4 text-balance">
-              Not the loudest brand.<br />
-              <span className="italic text-ember-500">Just the longest-lasting.</span>
+            <div className="reveal eyebrow">Why Choose Us</div>
+            <h2 className="display-caps text-display-lg mt-4 text-balance">
+              <span className="block reveal-mask reveal-delay-1">Not the loudest brand.</span>
+              <span className="block reveal-mask reveal-delay-2 text-ember-500">
+                Just the longest-lasting.
+              </span>
             </h2>
           </div>
-          <p className="md:col-span-5 text-lg text-bone-300 text-pretty">
+          <p className="reveal reveal-delay-3 md:col-span-5 text-lg text-bone-300 text-pretty">
             25+ years of building for the specific chaos of Sri Lankan roads —
             heat, monsoon, potholes, and overload. Here&apos;s what that gets you.
           </p>
@@ -81,7 +87,7 @@ export default function FeatureGrid() {
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f, i) => (
-            <div key={f.title} className={`reveal reveal-delay-${(i % 4) + 1} group`}>
+            <div key={f.title} className={`reveal-card reveal-delay-${i + 1} group`}>
               <GlowCard customSize glowColor="ember" style={emberCardVars} className="h-full p-8">
                 <div>
                   <div className="w-12 h-12 rounded-xl bg-ember-500/10 border border-ember-500/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-ember-500/15 transition-transform duration-300">

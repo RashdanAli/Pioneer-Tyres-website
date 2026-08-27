@@ -26,7 +26,7 @@ export default function TyresPage({
             <div className="eyebrow">The Range</div>
             <h1 className="display text-display-xl mt-4 text-balance max-w-4xl">
               Two products.<br />
-              <span className="italic text-ember-500">Zero compromise.</span>
+              <span className="text-ember-500">Zero compromise.</span>
             </h1>
             <p className="mt-6 max-w-2xl text-lg text-bone-300 text-pretty">
               A tuk-tuk tyre and an inner tube — that&apos;s our entire range.

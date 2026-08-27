@@ -12,26 +12,28 @@ export default function TyreSelector() {
   const match = category ? products.find((p) => p.category === category) : null;
 
   return (
-    <section id="selector" className="relative py-24 md:py-32">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(225,29,46,0.06),transparent_60%)]" />
-      </div>
+    <section id="selector" className="relative py-24 md:py-32 plate-raised">
+      {/* Implied light source #1 — upper left. */}
+      <div className="ambient ambient-left" aria-hidden="true" />
+      {/* Seam: a hairline that fades out at both ends. */}
+      <div className="absolute inset-x-0 top-0 h-px hairline" aria-hidden="true" />
 
       <div className="container-x relative">
-        <div className="reveal max-w-2xl">
-          <div className="eyebrow">The Range</div>
-          <h2 className="display text-display-lg mt-4 text-balance">
-            What do you <span className="italic text-ember-500">need?</span>
+        <div className="max-w-2xl">
+          <div className="reveal eyebrow">The Range</div>
+          <h2 className="display-caps text-display-lg mt-4 text-balance">
+            <span className="block reveal-mask reveal-delay-1">What do you</span>
+            <span className="block reveal-mask reveal-delay-2 text-ember-500">need?</span>
           </h2>
-          <p className="mt-5 text-lg text-bone-300 text-pretty">
+          <p className="reveal reveal-delay-3 mt-5 text-lg text-bone-300 text-pretty">
             Two products — <span className="text-white">Pioneer</span> tuk-tuk tyres and{' '}
             <span className="text-white">Avis</span> inner tubes. Pick one to see the details.
           </p>
         </div>
 
         {/* Product cards — both visible, click to expand */}
-        <div className="reveal reveal-delay-1 mt-12 grid gap-5 md:grid-cols-2">
-          {products.map((p) => {
+        <div className="mt-12 grid gap-5 md:grid-cols-2">
+          {products.map((p, i) => {
             const active = category === p.category;
             return (
               <button
@@ -40,6 +42,7 @@ export default function TyreSelector() {
                 onClick={() => setCategory(active ? null : p.category)}
                 aria-pressed={active}
                 className={[
+                  `reveal-card reveal-delay-${i + 3}`,
                   'group relative text-left overflow-hidden rounded-2xl border transition-all duration-500 cursor-pointer',
                   'p-5 sm:p-6',
                   active
@@ -88,7 +91,7 @@ export default function TyreSelector() {
               <div className="md:col-span-8">
                 <div className="text-[11px] text-ember-400 uppercase tracking-wider">You picked</div>
                 <div className="mt-1 font-display text-3xl text-white leading-tight">{match.name}</div>
-                <p className="mt-3 text-bone-100 italic font-display text-lg">{match.tagline}</p>
+                <p className="mt-3 text-bone-100 font-display text-lg" style={{ fontStretch: '112%', fontWeight: 500 }}>{match.tagline}</p>
                 <p className="mt-4 text-bone-300 text-[15px] leading-relaxed max-w-2xl">
                   {match.description}
                 </p>
@@ -124,7 +127,7 @@ export default function TyreSelector() {
                     </svg>
                   </Link>
                   <a
-                    href={whatsappUrl(`Hi, I'd like a quote for the ${match.name}. Please share pricing and availability.`)}
+                    href={whatsappUrl(`Hi CeyhedgesLanka, I'd like a quote for the ${match.name}. Please share pricing and availability.`)}
                     target="_blank"
                     rel="noreferrer"
                     className="btn-ghost w-full justify-center"

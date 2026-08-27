@@ -151,6 +151,11 @@ export function ProductImage({
             fill
             sizes={sizes || `${size}px`}
             priority={priority}
+            // These are cut-outs on a dark ground. Next re-encodes to lossy
+            // WebP at q=75 by default, and lossy ALPHA leaks a few points of
+            // opacity into transparent areas — which shows as faint speckle
+            // around the cut-out edge. q=100 keeps the alpha channel clean.
+            quality={100}
             className="object-contain drop-shadow-[0_18px_28px_rgba(0,0,0,0.55)] select-none"
             draggable={false}
           />
