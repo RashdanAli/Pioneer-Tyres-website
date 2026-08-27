@@ -26,9 +26,14 @@ export default function Nav() {
       <header
         className={[
           'fixed inset-x-0 top-0 z-50 transition-[background-color,border-color] duration-300',
-          scrolled
-            ? 'bg-ink-950/95 md:bg-ink-950/80 md:backdrop-blur-xl border-b border-white/[0.06]'
-            : 'bg-gradient-to-b from-ink-950/60 to-transparent',
+          // While the menu is open the header sits above a red panel, so it
+          // needs a solid ground of its own — otherwise the red wordmark in
+          // the logo is read against whatever page content is behind it.
+          open
+            ? 'bg-ink-950 border-b border-white/15'
+            : scrolled
+              ? 'bg-ink-950/95 md:bg-ink-950/80 md:backdrop-blur-xl border-b border-white/[0.06]'
+              : 'bg-gradient-to-b from-ink-950/60 to-transparent',
         ].join(' ')}
       >
         <div className="container-x flex h-16 items-center justify-between md:h-20">
@@ -81,7 +86,19 @@ export default function Nav() {
         ].join(' ')}
         aria-hidden={!open}
       >
-        <div className="absolute inset-0 bg-ink-950/98 md:backdrop-blur-xl" onClick={() => setOpen(false)} />
+        <div
+          onClick={() => setOpen(false)}
+          /* Deep ember panel. Written as an inline gradient on purpose:
+             Tailwind only emits opacity modifiers on its 5-step scale, so
+             `bg-ink-950/98` was never generated and this overlay rendered with
+             NO background — the menu appeared transparent over the page. A
+             literal gradient cannot be purged. */
+          style={{
+            backgroundImage:
+              'linear-gradient(165deg, #B8121F 0%, #8A0D18 52%, #5C0810 100%)',
+          }}
+          className="absolute inset-x-0 top-16 bottom-0"
+        />
         <div
           className={[
             'absolute inset-x-0 top-0 pt-24 pb-10 px-6 transition-transform duration-500',
@@ -94,11 +111,11 @@ export default function Nav() {
                 <Link
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="flex items-center justify-between py-4 border-b border-white/[0.06] text-2xl font-display text-white"
+                  className="flex items-center justify-between py-4 border-b border-white/25 text-2xl font-display text-white"
                   style={{ transitionDelay: `${i * 40}ms` }}
                 >
                   {item.label}
-                  <span className="text-ember-500">→</span>
+                  <span className="text-white/80">→</span>
                 </Link>
               </li>
             ))}
@@ -108,7 +125,7 @@ export default function Nav() {
             target="_blank"
             rel="noreferrer"
             onClick={() => setOpen(false)}
-            className="btn-primary w-full mt-8"
+            className="btn w-full mt-8 bg-white text-ember-700 px-6 py-3 font-semibold shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)] hover:bg-bone-100"
           >
             <WhatsAppIcon className="w-5 h-5" />
             WhatsApp us
