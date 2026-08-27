@@ -25,7 +25,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   const product = getProduct(params.slug);
   if (!product) notFound();
 
-  const inquiryText = `Hi, I'd like a quote for the ${product.name} (${product.sizes[0]}). Please share pricing and availability.`;
+  const inquiryText = `Hi CeyhedgesLanka, I'd like a quote for the ${product.name} (${product.sizes[0]}). Please share pricing and availability.`;
   const other = products.filter((p) => p.slug !== product.slug);
 
   const specRows = [
@@ -76,7 +76,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
               <div className="reveal">
                 <div className="eyebrow">{product.series}</div>
                 <h1 className="display text-display-lg mt-3 text-balance">{product.name}</h1>
-                <p className="mt-5 text-xl text-bone-100 italic font-display">{product.tagline}</p>
+                <p className="mt-5 text-xl text-bone-100 font-display" style={{ fontStretch: '112%', fontWeight: 500 }}>{product.tagline}</p>
                 <p className="mt-6 text-bone-300 leading-relaxed">{product.description}</p>
               </div>
 
@@ -126,18 +126,20 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
       </section>
 
       {/* Features */}
-      <section className="py-20 border-t border-white/[0.05]">
-        <div className="container-x">
-          <div className="reveal mb-10">
-            <div className="eyebrow">Engineering</div>
-            <h2 className="display text-display-md mt-3">What makes it different.</h2>
+      <section className="relative py-20 plate-raised">
+        <div className="ambient ambient-left" aria-hidden="true" />
+        <div className="absolute inset-x-0 top-0 h-px hairline" aria-hidden="true" />
+        <div className="container-x relative">
+          <div className="mb-10">
+            <div className="reveal eyebrow">Engineering</div>
+            <h2 className="reveal-mask reveal-delay-1 display-caps text-display-md mt-3">What makes it different.</h2>
           </div>
           <div className="grid gap-4 md:grid-cols-3">
             {product.features.map((f, i) => (
-              <div key={f.title} className={`reveal reveal-delay-${i + 1}`}>
+              <div key={f.title} className={`reveal-card reveal-delay-${i + 1}`}>
                 <GlowCard customSize glowColor="ember" style={emberCardVars} className="h-full p-8">
                   <div>
-                    <div className="font-display text-3xl text-ember-500/60 mb-4">0{i + 1}</div>
+                    <div className="reveal-blur display text-3xl text-ember-500/70 mb-4 tabular-nums">0{i + 1}</div>
                     <div className="font-display text-xl text-white leading-tight">{f.title}</div>
                     <p className="mt-3 text-bone-300 text-[15px] leading-relaxed">{f.body}</p>
                   </div>
@@ -149,12 +151,14 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
       </section>
 
       {/* Full spec sheet */}
-      <section className="py-20 border-t border-white/[0.05]">
-        <div className="container-x">
+      <section className="relative py-20 plate-base">
+        <div className="ambient ambient-right" aria-hidden="true" />
+        <div className="absolute inset-x-0 top-0 h-px hairline" aria-hidden="true" />
+        <div className="container-x relative">
           <div className="grid gap-10 lg:grid-cols-12">
             <div className="lg:col-span-4">
-              <div className="eyebrow">Specifications</div>
-              <h2 className="display text-display-md mt-3">The full sheet.</h2>
+              <div className="reveal eyebrow">Specifications</div>
+              <h2 className="reveal-mask reveal-delay-1 display-caps text-display-md mt-3">The full sheet.</h2>
               <p className="mt-4 text-bone-300">Everything printed on the sidewall — and everything that isn&apos;t.</p>
             </div>
             <div className="lg:col-span-8">

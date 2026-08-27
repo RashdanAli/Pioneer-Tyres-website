@@ -45,15 +45,18 @@ export default function SocialFabs() {
         target="_blank"
         rel="noreferrer"
         aria-label="Chat with us on WhatsApp"
-        className="group relative inline-flex items-center gap-2.5 pl-4 pr-5 py-3.5 rounded-full bg-[#25D366] text-white font-medium shadow-2xl shadow-[#25D366]/30 hover:bg-[#20b957] active:scale-[0.97] transition-all duration-300"
+        className="group relative inline-flex items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl shadow-[#25D366]/30 hover:bg-[#20b957] active:scale-[0.97] transition-all duration-300"
+        style={{ width: 52, height: 52 }}
       >
         <span
           className="absolute inset-0 rounded-full bg-[#25D366] opacity-40 animate-ping"
           style={{ animationDuration: '2.5s' }}
         />
-        <span className="relative flex items-center gap-2.5">
-          <WhatsAppIcon className="w-5 h-5" />
-          <span className="text-sm hidden sm:inline">WhatsApp us</span>
+        {/* Icon-only, matching the Facebook button. The accessible name lives
+            on aria-label above, so dropping the visible text costs nothing for
+            screen readers. */}
+        <span className="relative">
+          <WhatsAppIcon className="w-6 h-6" />
         </span>
       </a>
     </div>
