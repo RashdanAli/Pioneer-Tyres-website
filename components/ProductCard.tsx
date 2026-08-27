@@ -11,7 +11,7 @@ export function ProductCard({ product, size = 220 }: { product: Product; size?: 
   return (
     <Link
       href={`/tyres/${product.slug}`}
-      className="group relative block surface p-6 hover:border-ember-500/30 transition-all duration-500 hover:-translate-y-1"
+      className="group relative block surface p-6 hover:border-ember-500/30 transition-[transform,border-color] duration-500 hover:-translate-y-1"
     >
       <div className="relative aspect-square mb-5">
         <ProductImage

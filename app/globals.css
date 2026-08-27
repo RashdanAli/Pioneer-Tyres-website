@@ -250,8 +250,13 @@
 .reveal-card {
   opacity: 0;
   transform: translateY(22px) scale(0.985);
+  /* This shorthand wins over any Tailwind transition-* utility on the same
+     element (plain CSS, declared after @layer), so it has to name every
+     property the card animates — otherwise hover border/shadow snap. */
   transition: opacity var(--dur-med) var(--ease-out-expo),
-              transform var(--dur-med) var(--ease-settle);
+              transform var(--dur-med) var(--ease-settle),
+              border-color 300ms var(--ease-out-expo),
+              box-shadow 300ms var(--ease-out-expo);
 }
 .reveal-card.is-visible { opacity: 1; transform: none; }
 
@@ -294,9 +299,6 @@
   }
 }
 
-/* Tyre SVG */
-.tyre-svg { transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1); }
-.group:hover .tyre-svg { transform: rotate(45deg) scale(1.05); }
 
 /* Marquee row */
 /* Ticker.

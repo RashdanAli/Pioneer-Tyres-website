@@ -43,7 +43,7 @@ export default function TyreSelector() {
                 aria-pressed={active}
                 className={[
                   `reveal-card reveal-delay-${i + 3}`,
-                  'group relative text-left overflow-hidden rounded-2xl border transition-all duration-500 cursor-pointer',
+                  'group relative text-left overflow-hidden rounded-2xl border transition-[transform,border-color,box-shadow] duration-500 cursor-pointer',
                   'p-5 sm:p-6',
                   active
                     ? 'border-ember-500 bg-gradient-to-b from-ember-500/[0.06] to-ink-800 shadow-[0_0_0_1px_rgba(225,29,46,0.35),0_30px_80px_-25px_rgba(225,29,46,0.55)] -translate-y-1'
