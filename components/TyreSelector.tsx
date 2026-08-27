@@ -43,7 +43,7 @@ export default function TyreSelector() {
                 aria-pressed={active}
                 className={[
                   `reveal-card reveal-delay-${i + 3}`,
-                  'group relative text-left overflow-hidden rounded-2xl border transition-all duration-500 cursor-pointer',
+                  'group relative text-left overflow-hidden rounded-2xl border transition-[transform,border-color,box-shadow] duration-500 cursor-pointer',
                   'p-5 sm:p-6',
                   active
                     ? 'border-ember-500 bg-gradient-to-b from-ember-500/[0.06] to-ink-800 shadow-[0_0_0_1px_rgba(225,29,46,0.35),0_30px_80px_-25px_rgba(225,29,46,0.55)] -translate-y-1'
@@ -61,7 +61,7 @@ export default function TyreSelector() {
                     tiltStrength={9}
                     sizes="(max-width: 768px) 90vw, 45vw"
                   />
-                  <div className="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-ink-950/85 backdrop-blur px-2.5 py-1 text-[10px] uppercase tracking-wider text-bone-100 border border-white/[0.08]">
+                  <div className="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-ink-950/95 md:bg-ink-950/85 md:backdrop-blur px-2.5 py-1 text-[10px] uppercase tracking-wider text-bone-100 border border-white/[0.08]">
                     <span className="w-1 h-1 rounded-full bg-ember-500" />
                     {p.brand}
                   </div>

@@ -11,8 +11,8 @@ export default function CtaBanner() {
       <div className="container-x">
         <div className="reveal relative overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-br from-ink-800 via-ink-800 to-ink-700 p-10 md:p-16">
           {/* Glow */}
-          <div className="pointer-events-none absolute -top-32 -right-32 w-96 h-96 rounded-full bg-ember-500/20 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-40 -left-20 w-80 h-80 rounded-full bg-ember-700/20 blur-3xl" />
+          <div className="pointer-events-none absolute -top-32 -right-32 w-96 h-96 rounded-full bg-[radial-gradient(circle,rgba(225,29,46,0.16),transparent_70%)] md:bg-ember-500/20 md:blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-40 -left-20 w-80 h-80 rounded-full bg-[radial-gradient(circle,rgba(138,13,24,0.18),transparent_70%)] md:bg-ember-700/20 md:blur-3xl" />
           <div className="pointer-events-none absolute inset-0 opacity-[0.03]"
                style={{
                  backgroundImage:

@@ -1,6 +1,12 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
+  future: {
+    // `hover:` -> @media (hover: hover). Without this, tapping a card on a
+    // phone triggers :hover and it sticks: the card stays lifted and
+    // shadowed until you tap something else.
+    hoverOnlyWhenSupported: true,
+  },
   content: [
     './app/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
