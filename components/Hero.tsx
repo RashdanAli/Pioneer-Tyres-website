@@ -1,12 +1,11 @@
 import Link from 'next/link';
-import HeroVideo from './HeroVideo';
+import HeroBanner from './HeroBanner';
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[100svh] overflow-hidden pt-24 md:pt-28 pb-16">
-      {/* Background — video + radial glows + grid.
-          The video sits inside this section, so it scrolls away with the hero. */}
-      <HeroVideo />
+    <section className="relative min-h-[100svh] overflow-hidden pt-20 md:pt-28 pb-16">
+      {/* Background — radial glows + grid. No video: the hero's ground is
+          drawn in CSS, which costs nothing to download or decode. */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(225,29,46,0.14),transparent_45%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_80%,rgba(225,29,46,0.09),transparent_50%)]" />
@@ -20,9 +19,17 @@ export default function Hero() {
       </div>
 
       <div className="container-x relative">
-        <div className="grid gap-14 lg:grid-cols-12 lg:gap-8 items-center">
-          {/* Left — copy */}
-          <div className="lg:col-span-7 relative z-10">
+        <div className="grid lg:grid-cols-12">
+          {/* Signage first: this is the brand asset we want seen the moment
+              the page opens, and at 3.77:1 it needs the full content width to
+              stay legible. Placed ahead of the copy in DOM order too, so the
+              reading order matches the visual order for screen readers. */}
+          <div className="lg:col-span-12">
+            <HeroBanner />
+          </div>
+
+          {/* Copy */}
+          <div className="lg:col-span-8 relative z-10">
             <div className="reveal flex items-center gap-3">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-bone-100">
                 <span className="w-1.5 h-1.5 rounded-full bg-ember-500 animate-ember-pulse" />
@@ -63,10 +70,6 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right column intentionally left open so the background footage
-              reads through unobstructed. The product shots live in the
-              selector and on the product pages, where they have context. */}
-          <div className="hidden lg:block lg:col-span-5" aria-hidden="true" />
         </div>
       </div>
 

@@ -42,6 +42,9 @@ export function ProductImage({
     const tilt = tiltRef.current;
     if (!wrap || !tilt) return;
 
+    // Tilt is running on this device, so the layer hint now earns its keep.
+    tilt.style.willChange = 'transform';
+
     let rect = wrap.getBoundingClientRect();
     const refreshRect = () => { rect = wrap.getBoundingClientRect(); };
 
@@ -138,7 +141,11 @@ export function ProductImage({
       {/* Tilting layer */}
       <div
         ref={tiltRef}
-        className="absolute inset-0 flex items-center justify-center will-change-transform"
+        // `will-change` is applied by the tilt effect only when tilt is
+        // actually enabled (fine pointer, motion allowed). Hard-coding it here
+        // promoted a GPU layer per product image on phones, where the tilt
+        // never runs — cost with no benefit.
+        className="absolute inset-0 flex items-center justify-center"
         style={{ transformStyle: 'preserve-3d' }}
       >
         <div
@@ -151,12 +158,12 @@ export function ProductImage({
             fill
             sizes={sizes || `${size}px`}
             priority={priority}
-            // These are cut-outs on a dark ground. Next re-encodes to lossy
-            // WebP at q=75 by default, and lossy ALPHA leaks a few points of
-            // opacity into transparent areas — which shows as faint speckle
-            // around the cut-out edge. q=100 keeps the alpha channel clean.
-            quality={100}
-            className="object-contain drop-shadow-[0_18px_28px_rgba(0,0,0,0.55)] select-none"
+            // Cut-outs on a dark ground. q=100 was belt-and-braces against
+            // lossy-alpha speckle, but the real safeguard is that every hidden
+            // pixel is already painted ink-950 — any leak composites invisibly.
+            // 82 keeps that guarantee at a fraction of the bytes.
+            quality={82}
+            className="object-contain md:drop-shadow-[0_18px_28px_rgba(0,0,0,0.55)] select-none"
             draggable={false}
           />
         </div>

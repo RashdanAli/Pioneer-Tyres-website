@@ -25,9 +25,9 @@ export default function Nav() {
     <>
       <header
         className={[
-          'fixed inset-x-0 top-0 z-50 transition-all duration-300',
+          'fixed inset-x-0 top-0 z-50 transition-[background-color,border-color] duration-300',
           scrolled
-            ? 'bg-ink-950/80 backdrop-blur-xl border-b border-white/[0.06]'
+            ? 'bg-ink-950/95 md:bg-ink-950/80 md:backdrop-blur-xl border-b border-white/[0.06]'
             : 'bg-gradient-to-b from-ink-950/60 to-transparent',
         ].join(' ')}
       >
@@ -81,7 +81,7 @@ export default function Nav() {
         ].join(' ')}
         aria-hidden={!open}
       >
-        <div className="absolute inset-0 bg-ink-950/95 backdrop-blur-xl" onClick={() => setOpen(false)} />
+        <div className="absolute inset-0 bg-ink-950/98 md:backdrop-blur-xl" onClick={() => setOpen(false)} />
         <div
           className={[
             'absolute inset-x-0 top-0 pt-24 pb-10 px-6 transition-transform duration-500',
