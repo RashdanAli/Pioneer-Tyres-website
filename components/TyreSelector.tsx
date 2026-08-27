@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { products, type Category } from '@/lib/products';
 import { ProductImage } from './ProductImage';
@@ -10,6 +10,22 @@ import { whatsappUrl } from '@/lib/site';
 export default function TyreSelector() {
   const [category, setCategory] = useState<Category | null>(null);
   const match = category ? products.find((p) => p.category === category) : null;
+
+  const detailsRef = useRef<HTMLDivElement | null>(null);
+
+  /* Bring the details panel into view on pick. Without this the panel opens
+     below the fold — on mobile it is entirely off-screen — and a first-time
+     visitor has no reason to know anything happened at all. */
+  useEffect(() => {
+    if (!category) return;
+    const el = detailsRef.current;
+    if (!el) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // scrollIntoView flushes layout itself, so the freshly mounted panel's
+    // offset is already correct here — no need to wait a frame.
+    el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+  }, [category]);
 
   return (
     <section id="selector" className="relative py-24 md:py-32 plate-raised">
@@ -31,62 +47,81 @@ export default function TyreSelector() {
           </p>
         </div>
 
-        {/* Product cards — both visible, click to expand */}
-        <div className="mt-12 grid gap-5 md:grid-cols-2">
+        {/* Product cards — both stay visible; the picked one takes the ember border. */}
+        <div className="mt-12 grid gap-5 md:grid-cols-2 items-stretch">
           {products.map((p, i) => {
             const active = category === p.category;
             return (
-              <button
-                key={p.slug}
-                type="button"
-                onClick={() => setCategory(active ? null : p.category)}
-                aria-pressed={active}
-                className={[
-                  `reveal-card reveal-delay-${i + 3}`,
-                  'group relative text-left overflow-hidden rounded-2xl border transition-[transform,border-color,box-shadow] duration-500 cursor-pointer',
-                  'p-5 sm:p-6',
-                  active
-                    ? 'border-ember-500 bg-gradient-to-b from-ember-500/[0.06] to-ink-800 shadow-[0_0_0_1px_rgba(225,29,46,0.35),0_30px_80px_-25px_rgba(225,29,46,0.55)] -translate-y-1'
-                    : 'border-white/[0.08] bg-ink-800 hover:border-white/25 hover:-translate-y-1 hover:shadow-[0_20px_60px_-25px_rgba(0,0,0,0.6)]',
-                ].join(' ')}
-              >
-                <div className="relative aspect-[5/4]">
-                  <ProductImage
-                    src={p.image}
-                    alt={p.name}
-                    size={360}
-                    frameClassName="rounded-xl"
-                    className="absolute inset-0"
-                    variant={p.imageVariant}
-                    tiltStrength={9}
-                    sizes="(max-width: 768px) 90vw, 45vw"
-                  />
-                  <div className="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-ink-950/95 md:bg-ink-950/85 md:backdrop-blur px-2.5 py-1 text-[10px] uppercase tracking-wider text-bone-100 border border-white/[0.08]">
-                    <span className="w-1 h-1 rounded-full bg-ember-500" />
-                    {p.brand}
-                  </div>
-                  {active && (
-                    <div className="absolute top-3 right-3 z-10 w-6 h-6 rounded-full bg-ember-500 flex items-center justify-center shadow-lg shadow-ember-500/40 animate-fade-in">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                        <path d="M2.5 6.5l2.5 2.5 5-6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
+              /* The reveal classes live on this wrapper, NOT on the button.
+                 Reveal.tsx adds `is-visible` straight to the DOM node, so any
+                 element whose className React rewrites on a state change loses
+                 it again — and a .reveal-card without .is-visible is
+                 opacity:0. Keeping the wrapper's className constant is what
+                 stops the selected card from vanishing when it is clicked. */
+              <div key={p.slug} className={`reveal-card reveal-delay-${i + 3}`}>
+                <button
+                  type="button"
+                  onClick={() => setCategory(active ? null : p.category)}
+                  aria-pressed={active}
+                  className={[
+                    'group relative w-full h-full text-left overflow-hidden rounded-2xl border cursor-pointer',
+                    'transition-[transform,border-color,box-shadow] duration-500',
+                    'p-5 sm:p-6',
+                    active
+                      ? 'border-ember-500 bg-gradient-to-b from-ember-500/[0.06] to-ink-800 shadow-[0_0_0_1px_rgba(225,29,46,0.35),0_30px_80px_-25px_rgba(225,29,46,0.55)] -translate-y-1'
+                      : 'border-white/[0.08] bg-ink-800 hover:border-white/25 hover:-translate-y-1 hover:shadow-[0_20px_60px_-25px_rgba(0,0,0,0.6)]',
+                  ].join(' ')}
+                >
+                  <div className="relative aspect-[5/4]">
+                    <ProductImage
+                      src={p.image}
+                      alt={p.name}
+                      size={360}
+                      frameClassName="rounded-xl"
+                      className="absolute inset-0"
+                      variant={p.imageVariant}
+                      tiltStrength={9}
+                      sizes="(max-width: 768px) 90vw, 45vw"
+                    />
+                    <div className="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-ink-950/95 md:bg-ink-950/85 md:backdrop-blur px-2.5 py-1 text-[10px] uppercase tracking-wider text-bone-100 border border-white/[0.08]">
+                      <span className="w-1 h-1 rounded-full bg-ember-500" />
+                      {p.brand}
                     </div>
-                  )}
-                </div>
+                    {active && (
+                      <div className="absolute top-3 right-3 z-10 w-6 h-6 rounded-full bg-ember-500 flex items-center justify-center shadow-lg shadow-ember-500/40 animate-fade-in">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                          <path d="M2.5 6.5l2.5 2.5 5-6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
 
-                <div className="mt-5">
-                  <div className="text-[11px] text-ember-400 uppercase tracking-wider">{p.series}</div>
-                  <div className="mt-1 font-display text-2xl md:text-3xl text-white leading-tight">{p.name}</div>
-                  <p className="mt-2 text-sm text-bone-300 line-clamp-2">{p.tagline}</p>
-                </div>
-              </button>
+                  <div className="mt-5">
+                    <div className="text-[11px] text-ember-400 uppercase tracking-wider">{p.series}</div>
+                    <div className="mt-1 font-display text-2xl md:text-3xl text-white leading-tight">{p.name}</div>
+                    <p className="mt-2 text-sm text-bone-300 line-clamp-2">{p.tagline}</p>
+                    <div
+                      className={[
+                        'mt-3 text-[11px] uppercase tracking-wider transition-colors duration-300',
+                        active ? 'text-ember-400' : 'text-bone-400 group-hover:text-bone-100',
+                      ].join(' ')}
+                    >
+                      {active ? 'Selected — details below' : 'Tap to see details'}
+                    </div>
+                  </div>
+                </button>
+              </div>
             );
           })}
         </div>
 
         {/* Expanded match details */}
         {match && (
-          <div className="reveal mt-6 surface-elevated p-6 md:p-8 animate-fade-up">
+          <div
+            ref={detailsRef}
+            /* scroll-mt clears the fixed header (h-16 / md:h-20) on scroll-to. */
+            className="mt-6 scroll-mt-24 md:scroll-mt-28 surface-elevated p-6 md:p-8 animate-fade-up"
+          >
             <div className="grid gap-8 md:grid-cols-12 items-start">
               <div className="md:col-span-8">
                 <div className="text-[11px] text-ember-400 uppercase tracking-wider">You picked</div>
