@@ -1,22 +1,12 @@
 import type { Metadata } from 'next';
 import CatalogFilters from '@/components/CatalogFilters';
-import type { Category } from '@/lib/products';
 
 export const metadata: Metadata = {
   title: 'Products — Pioneer Tyre',
   description: 'Explore the Pioneer Tyre range — tuk-tuk tyres and universal inner tubes. Available across Sri Lanka since 2000.',
 };
 
-export default function TyresPage({
-  searchParams,
-}: {
-  searchParams: { category?: string };
-}) {
-  const initialCategory: Category | null =
-    searchParams.category === 'tyre' || searchParams.category === 'tube'
-      ? (searchParams.category as Category)
-      : null;
-
+export default function TyresPage() {
   return (
     <>
       <section className="relative pt-32 pb-14 md:pt-40 md:pb-20">
@@ -38,7 +28,7 @@ export default function TyresPage({
 
       <section className="pb-24 md:pb-32">
         <div className="container-x">
-          <CatalogFilters initialCategory={initialCategory} />
+          <CatalogFilters />
         </div>
       </section>
     </>

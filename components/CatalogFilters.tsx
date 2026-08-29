@@ -1,15 +1,19 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ProductCard } from './ProductCard';
 import { products, filterOptions, type Category } from '@/lib/products';
 
-export default function CatalogFilters({
-  initialCategory,
-}: {
-  initialCategory?: Category | null;
-}) {
-  const [category, setCategory] = useState<Category | null>(initialCategory ?? null);
+export default function CatalogFilters() {
+  const [category, setCategory] = useState<Category | null>(null);
+
+  // The site is statically exported, so ?category= can't be read on the server.
+  // Render every product into the HTML, then narrow it down once we're on the
+  // client and can see the query string.
+  useEffect(() => {
+    const c = new URLSearchParams(window.location.search).get('category');
+    if (c === 'tyre' || c === 'tube') setCategory(c);
+  }, []);
 
   const filtered = useMemo(
     () => products.filter((p) => (category ? p.category === category : true)),
