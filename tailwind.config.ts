@@ -15,6 +15,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // shadcn semantic tokens, mapped onto the site's existing RGB
+        // variables in globals.css so ui/ components match the brand palette.
+        background: 'rgb(var(--color-bg) / <alpha-value>)',
+        foreground: 'rgb(var(--color-text) / <alpha-value>)',
+        muted: {
+          DEFAULT: 'rgb(var(--color-surface) / <alpha-value>)',
+          foreground: 'rgb(var(--color-text-muted) / <alpha-value>)',
+        },
+        primary: {
+          DEFAULT: 'rgb(var(--color-accent) / <alpha-value>)',
+          foreground: 'rgb(255 255 255 / <alpha-value>)',
+        },
         ink: {
           950: '#050506',
           900: '#0A0A0C',
@@ -91,7 +103,9 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  // `@lg:` / `@xl:` container variants — the squeeze carousel sizes itself to
+  // the width it is given, not the window.
+  plugins: [require('@tailwindcss/container-queries')],
 };
 
 export default config;

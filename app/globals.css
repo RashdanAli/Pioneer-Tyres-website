@@ -311,6 +311,28 @@
   to   { transform: translate3d(0, 0, 0); }
 }
 
+/* Squeeze deck timer line (components/ui/squeeze-deck.tsx). Declared here
+   because it is applied via an inline style, so Tailwind never sees an
+   animate-* utility for it and would purge a config-only definition. */
+@keyframes deck-timer {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* Squeeze deck reader entrance. Short and compositor-only (opacity and
+   transform): the backdrop fades in quickly and the slide settles in from
+   a slight scale, rather than two slow 500ms fades stacked on each other. */
+@keyframes deck-reader-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes deck-reader-pop {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+.deck-reader-in  { animation: deck-reader-in 180ms ease-out both; }
+.deck-reader-pop { animation: deck-reader-pop 260ms var(--ease-out-expo) both; }
+
 .marquee-track {
   display: flex;
   gap: 4rem;
