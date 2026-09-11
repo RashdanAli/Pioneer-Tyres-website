@@ -44,22 +44,39 @@ const WINDOW = 7;
 /** Preview columns by distance from the open slide (1, 2, 3). */
 const WEIGHTS = [0.61, 0.3, 0.15];
 
+/* Phones: the open slide takes nearly the whole row with just a peek of the
+   next slide beside it, and the row runs on into the page's right gutter to
+   the screen edge (the left edge stays aligned with the text above). */
+const COMPACT_BELOW = 480;
+const COMPACT_WINDOW = 2;
+const COMPACT_WEIGHTS = [1];
+/** Gap + peek of the next slide. */
+const COMPACT_SIDE = '34px';
+/** How far the row bleeds right on phones: container-x's px-5 gutter. Same
+    pure-CSS step as SIDE below — 1.25rem under COMPACT_BELOW, else 0. */
+const BLEED = `max(0px, min(1.25rem, (${COMPACT_BELOW}px - 100cqi) * 1000))`;
+
 const GAP = 'clamp(6px, 1.4cqi, 16px)';
 const SLAT_GAP = 'clamp(4px, 0.7cqi, 8px)';
 const SLAT = 'clamp(4px, 0.7cqi, 8px)';
 
-/* Row height, solved backwards: the open slide gets whatever width is left
-   after gaps, slats and the previews' share (28% of the row, 72–340px).
-   Capped so the toolbar, row, timer and caption fit under the fixed header
-   on short laptop screens. */
-const HEIGHT =
-  `min(calc((100cqi - 3 * ${GAP} - 3 * ${SLAT_GAP} - 3 * ${SLAT} - clamp(72px, 28cqi, 340px)) * 9 / 16),` +
-  ` max(160px, calc(100vh - 17rem)))`;
+/* Width left beside the open slide: gaps, slats and the previews' share
+   (28% of the row, 72–340px) — or a flat 56px on phones. The switch is a
+   pure-CSS step: below COMPACT_BELOW the `* 1000` term goes hugely negative
+   and max() settles on 56px; above it, the term is huge and min() picks the
+   wide value. So the height is right on first paint, before any JS runs. */
+const WIDE_SIDE = `(3 * ${GAP} + 3 * ${SLAT_GAP} + 3 * ${SLAT} + clamp(72px, 28cqi, 340px))`;
+const SIDE = `max(${COMPACT_SIDE}, min(${WIDE_SIDE}, (100cqi - ${COMPACT_BELOW}px) * 1000 + ${COMPACT_SIDE}))`;
+
+/* Row height, solved backwards from that. Capped so the toolbar, row, timer
+   and caption fit under the fixed header on short laptop screens. */
+const HEIGHT = `min(calc((100cqi + var(--deck-bleed) - ${SIDE}) * 9 / 16), max(160px, calc(100vh - 17rem)))`;
 
 type Role = 'hidden' | 'open' | 'preview' | 'slat';
 
-function layout(count: number, active: number) {
-  const visible = Math.min(WINDOW, count);
+function layout(count: number, active: number, compact: boolean) {
+  const shares = compact ? COMPACT_WEIGHTS : WEIGHTS;
+  const visible = Math.min(compact ? COMPACT_WINDOW : WINDOW, count);
   const start = Math.max(0, Math.min(active, count - visible));
 
   const roles: Role[] = [];
@@ -68,9 +85,9 @@ function layout(count: number, active: number) {
     const d = Math.abs(i - active);
     if (i < start || i >= start + visible) roles.push('hidden');
     else if (d === 0) roles.push('open');
-    else if (d <= WEIGHTS.length) roles.push('preview');
+    else if (d <= shares.length) roles.push('preview');
     else roles.push('slat');
-    weights.push(roles[i] === 'preview' ? WEIGHTS[d - 1] : 0);
+    weights.push(roles[i] === 'preview' ? shares[d - 1] : 0);
   }
 
   // Gap before each visible card except the first: tight next to a slat.
@@ -91,7 +108,7 @@ function layout(count: number, active: number) {
 
   const nSlat = roles.filter((r) => r === 'slat').length;
   const sumW = weights.reduce((a, b) => a + b, 0) || 1;
-  const room = `(100cqi - var(--deck-hero) - ${nGap} * ${GAP} - ${nSlatGap} * ${SLAT_GAP} - ${nSlat} * ${SLAT})`;
+  const room = `(100cqi + var(--deck-bleed) - var(--deck-hero) - ${nGap} * ${GAP} - ${nSlatGap} * ${SLAT_GAP} - ${nSlat} * ${SLAT})`;
 
   const widths = roles.map((r, i) => {
     if (r === 'hidden') return '0px';
@@ -141,6 +158,25 @@ export function SqueezeDeck({ slides, interval = 4000, label = 'Slides', classNa
   const [inView, setInView] = useState(false);
   const [armed, setArmed] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
+  const [compact, setCompact] = useState(false);
+  // Widths only animate once the first measurement has landed, so a phone
+  // doesn't watch the row re-lay itself out after hydration.
+  const [measured, setMeasured] = useState(false);
+
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return;
+    let frame = 0;
+    const ro = new ResizeObserver(([e]) => {
+      setCompact(e.contentRect.width < COMPACT_BELOW);
+      if (!frame) frame = requestAnimationFrame(() => setMeasured(true));
+    });
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, []);
 
   /* Autoplay holds only for things a reader is visibly doing: a mouse over
      the slides, keyboard focus inside, the expanded view, the pause button,
@@ -251,7 +287,7 @@ export function SqueezeDeck({ slides, interval = 4000, label = 'Slides', classNa
 
   if (!count) return null;
 
-  const { roles, widths, gaps } = layout(count, active);
+  const { roles, widths, gaps } = layout(count, active, compact);
   const pad = (n: number) => String(n).padStart(2, '0');
   const pausedByReader = playing && !reduced && !running && inView && !expanded;
 
@@ -264,6 +300,7 @@ export function SqueezeDeck({ slides, interval = 4000, label = 'Slides', classNa
       className={cn('w-full', className)}
       style={{
         containerType: 'inline-size',
+        ['--deck-bleed' as string]: BLEED,
         ['--deck-h' as string]: HEIGHT,
         ['--deck-hero' as string]: 'calc(var(--deck-h) * 16 / 9)',
       }}
@@ -315,7 +352,14 @@ export function SqueezeDeck({ slides, interval = 4000, label = 'Slides', classNa
         role="group"
         aria-label="Slides — arrow keys move, Enter expands"
         className="flex w-full overflow-hidden"
-        style={{ height: 'var(--deck-h)', touchAction: 'pan-y' }}
+        style={{
+          width: 'calc(100% + var(--deck-bleed))',
+          height: 'var(--deck-h)',
+          touchAction: 'pan-y',
+          // The cards animate width every step; this keeps that relayout
+          // inside the row instead of rippling through the whole page.
+          contain: 'layout paint',
+        }}
         onPointerEnter={(e) => e.pointerType === 'mouse' && setHovered(true)}
         onPointerLeave={(e) => { if (e.pointerType === 'mouse') setHovered(false); swipe.current = null; }}
         onPointerDown={onPointerDown}
@@ -347,7 +391,12 @@ export function SqueezeDeck({ slides, interval = 4000, label = 'Slides', classNa
               style={{
                 width: widths[i],
                 marginLeft: gaps[i] ?? 0,
-                transition: 'width 900ms var(--ease-out-expo), margin-left 900ms var(--ease-out-expo)',
+                // No width animation while the reader covers the row —
+                // nobody can see it, and it would compete with the reader's
+                // own entrance for frames.
+                transition: measured && !expanded
+                  ?'width 900ms var(--ease-out-expo), margin-left 900ms var(--ease-out-expo)'
+                  : 'none',
               }}
             >
               {armed && (
@@ -458,12 +507,15 @@ function Reader({
   const s = slides[index];
 
   useEffect(() => {
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
     backRef.current?.focus({ preventScroll: true });
-    return () => {
-      document.body.style.overflow = prevOverflow;
-    };
+    // Keep the page behind from scrolling. Deliberately NOT body{overflow:
+    // hidden}: toggling that relayouts and repaints the whole page on every
+    // open and close, which is what made expanding feel sticky on phones.
+    // Touch panning is blocked by `touch-action` on the dialog instead.
+    const el = dialogRef.current;
+    const stop = (e: WheelEvent) => e.preventDefault();
+    el?.addEventListener('wheel', stop, { passive: false });
+    return () => el?.removeEventListener('wheel', stop);
   }, []);
 
   const onKeyDown = (e: KeyboardEvent) => {
@@ -491,7 +543,10 @@ function Reader({
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       /* Solid on phones: without the blur, a translucent scrim lets the page's
          big headings ghost through behind the caption. */
-      className="fixed inset-0 z-[100] flex flex-col bg-ink-950 px-4 pb-5 pt-4 animate-fade-in sm:px-8 sm:pb-8 sm:pt-6 md:bg-ink-950/90 md:backdrop-blur-md"
+      // Pinch-zoom stays available; panning (and so scrolling the page
+      // behind) does not.
+      style={{ touchAction: 'pinch-zoom' }}
+      className="fixed inset-0 z-[100] flex flex-col bg-ink-950 px-4 pb-5 pt-4 deck-reader-in sm:px-8 sm:pb-8 sm:pt-6 md:bg-ink-950/90 md:backdrop-blur-md"
     >
       <div className="flex items-center justify-between gap-4">
         <button
@@ -517,7 +572,7 @@ function Reader({
           key={s.src}
           src={s.src}
           alt={s.alt}
-          className="aspect-[16/9] w-full rounded-xl bg-bone-100 object-contain shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] animate-fade-in"
+          className="aspect-[16/9] w-full rounded-xl bg-bone-100 object-contain shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] deck-reader-pop"
           style={{ maxWidth: 'min(100%, calc((100vh - 11rem) * 16 / 9))' }}
         />
       </div>
