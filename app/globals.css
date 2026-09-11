@@ -311,6 +311,14 @@
   to   { transform: translate3d(0, 0, 0); }
 }
 
+/* Squeeze deck timer line (components/ui/squeeze-deck.tsx). Declared here
+   because it is applied via an inline style, so Tailwind never sees an
+   animate-* utility for it and would purge a config-only definition. */
+@keyframes deck-timer {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
 .marquee-track {
   display: flex;
   gap: 4rem;
