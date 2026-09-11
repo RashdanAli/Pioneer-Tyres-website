@@ -311,10 +311,10 @@
   to   { transform: translate3d(0, 0, 0); }
 }
 
-/* Presentation autoplay timer (ProductSlides). Lives here for the same
-   reason as the ticker keyframes: it is applied via an inline style, so
-   Tailwind never sees an animate-* utility for it. */
-@keyframes slide-progress {
+/* Squeeze deck timer line (components/ui/squeeze-deck.tsx). Declared here
+   because it is applied via an inline style, so Tailwind never sees an
+   animate-* utility for it and would purge a config-only definition. */
+@keyframes deck-timer {
   from { transform: scaleX(0); }
   to   { transform: scaleX(1); }
 }
